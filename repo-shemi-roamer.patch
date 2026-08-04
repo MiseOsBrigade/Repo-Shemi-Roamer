@@ -1,0 +1,1192 @@
+diff --git a/.github/workflows/shemi-roamer.yml b/.github/workflows/shemi-roamer.yml
+new file mode 100644
+index 0000000..895958b
+--- /dev/null
++++ b/.github/workflows/shemi-roamer.yml
+@@ -0,0 +1,37 @@
++name: Shemi Roamer CI
++
++on:
++  push:
++  pull_request:
++  workflow_dispatch:
++
++permissions:
++  contents: read
++
++jobs:
++  validate:
++    runs-on: ubuntu-latest
++    timeout-minutes: 5
++
++    strategy:
++      matrix:
++        node-version: [20, 22, 24]
++
++    steps:
++      - name: Checkout
++        uses: actions/checkout@v5
++
++      - name: Set up Node.js
++        uses: actions/setup-node@v5
++        with:
++          node-version: ${{ matrix.node-version }}
++          cache: npm
++
++      - name: Install
++        run: npm install --ignore-scripts
++
++      - name: Validate
++        run: npm run check
++
++      - name: Run bounded mascot demo
++        run: npm run demo
+diff --git a/.gitignore b/.gitignore
+new file mode 100644
+index 0000000..9a6680d
+--- /dev/null
++++ b/.gitignore
+@@ -0,0 +1,17 @@
++node_modules/
++dist/
++build/
++coverage/
++.DS_Store
++*.log
++.env
++.env.*
++!.env.example
++*.tgz
++*.zip
++*.tar
++.nyc_output/
++.vscode/
++.idea/
++tmp/
++output/
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+new file mode 100644
+index 0000000..7a18290
+--- /dev/null
++++ b/CHANGELOG.md
+@@ -0,0 +1,31 @@
++# Changelog
++
++All notable changes to this project are documented here.
++
++## [Unreleased]
++
++### Planned
++
++- Additional mascot profiles.
++- Browser overlay and GitHub Pages visualization.
++- Pluggable event sinks.
++
++## [0.1.0] - 2026-08-04
++
++### Added
++
++- Read-only repository and container filesystem roaming.
++- Modular safety, character, renderer, random, and CLI option modules.
++- Optional safe `--peek` mode for small non-secret text files.
++- Finite `--steps` mode for CI and demonstrations.
++- Deterministic `--seed` support.
++- JSON Lines output through `--json`.
++- Node.js smoke and safety tests.
++- GitHub Actions validation workflow.
++
++### Security
++
++- Secret-like paths are redacted from emitted events.
++- Heavy and system-sensitive directories are skipped.
++- Symbolic links are never followed.
++- File content access is disabled by default.
+diff --git a/LICENSE b/LICENSE
+new file mode 100644
+index 0000000..d7bcc79
+--- /dev/null
++++ b/LICENSE
+@@ -0,0 +1,21 @@
++MIT License
++
++Copyright (c) 2026 MiseOS contributors
++
++Permission is hereby granted, free of charge, to any person obtaining a copy
++of this software and associated documentation files (the "Software"), to deal
++in the Software without restriction, including without limitation the rights
++to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
++copies of the Software, and to permit persons to whom the Software is
++furnished to do so, subject to the following conditions:
++
++The above copyright notice and this permission notice shall be included in all
++copies or substantial portions of the Software.
++
++THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
++AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
++OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
++SOFTWARE.
+diff --git a/README.md b/README.md
+new file mode 100644
+index 0000000..ec51751
+--- /dev/null
++++ b/README.md
+@@ -0,0 +1,186 @@
++# Repo Shemi Roamer
++
++A Shimeji-style terminal mascot that safely roams through a repository or container filesystem. Repo Shemi is a read-only observer: it explores metadata by default, can optionally inspect a tightly constrained first line of safe text files, and never mutates the filesystem.
++
++## Features
++
++- Metadata-only traversal by default.
++- Secret-like path redaction and content blocking.
++- No symbolic-link traversal.
++- Heavy and system-sensitive directory exclusions.
++- Deterministic seeded demonstrations.
++- Finite CI-safe execution.
++- JSON Lines event output.
++- Character profiles with path preferences.
++- Node.js built-in test suite with no runtime dependencies.
++
++## Requirements
++
++- Node.js 20 or newer.
++
++## Install and run
++
++```bash
++npm install
++npm run roam:repo
++```
++
++Or invoke the CLI directly:
++
++```bash
++node bin/shemi-roamer.mjs . --max-depth=6 --tick=650
++```
++
++Press `q` or `Ctrl+C` to stop live terminal mode.
++
++## Commands
++
++```bash
++npm run start
++npm run roam:repo
++npm run roam:container
++npm run demo
++npm run demo:jsonl
++npm run list:characters
++npm test
++npm run check
++```
++
++## CLI reference
++
++```text
++shemi [root] [options]
++
++--character=<id>    Select a mascot profile
++--max-depth=<n>     Maximum traversal depth
++--tick=<ms>         Delay between live steps
++--steps=<n>         Run a finite number of steps
++--seed=<value>      Use deterministic traversal
++--peek              Read the first useful line of safe small text files
++--json              Emit JSON Lines instead of terminal UI
++--show-hidden       Include hidden entries except ignored paths
++--list-characters   Print available mascot profiles
++--help              Print help
++--version           Print the package version
++```
++
++## Examples
++
++### Bounded repository demo
++
++```bash
++node bin/shemi-roamer.mjs . --steps=8 --seed=miseos
++```
++
++### Machine-readable JSON Lines
++
++```bash
++node bin/shemi-roamer.mjs . --steps=8 --seed=miseos --json
++```
++
++### Safe peeking
++
++Peeking is disabled by default. When enabled, Repo Shemi only reads files that are:
++
++- text-like source, configuration, or documentation files;
++- smaller than 80 KB;
++- not identified as secret-like;
++- not reached through a symbolic link.
++
++```bash
++node bin/shemi-roamer.mjs . --steps=8 --peek
++```
++
++### Container filesystem
++
++```bash
++node bin/shemi-roamer.mjs / --max-depth=4 --tick=800
++```
++
++System-sensitive paths such as `/proc`, `/sys`, `/dev`, `/run`, `/tmp`, `/var/lib`, `/var/cache`, and `/var/log` are excluded.
++
++## Characters
++
++```bash
++node bin/shemi-roamer.mjs --list-characters
++```
++
++| ID | Character | Role | Repository bias |
++|---|---|---|---|
++| `orchestra-core` | Orchestra Core | Chef Spirit | Root docs, package metadata, workflows |
++| `kurogami-senpai` | Kurogami Senpai | Chef de Cuisine | Source, CLI, and automation |
++| `seira` | Seira | Sommelier | Security and configuration stations |
++| `build-kun` | Build-Kun | Boulanger | Build, container, and binary stations |
++
++Unknown character IDs safely fall back to `orchestra-core`.
++
++## Safety model
++
++Repo Shemi is intentionally incapable of filesystem mutation.
++
++- It only uses `lstat`, `readdir`, and optional constrained `readFile` operations.
++- It never writes, deletes, renames, moves, changes permissions, or executes repository files.
++- It skips symbolic links rather than resolving them.
++- It excludes heavy and system-sensitive directories.
++- Hidden entries are excluded by default, except safe project metadata such as `.github`.
++- Secret-like names are not peeked and are redacted in emitted paths.
++- `--peek` must be explicitly enabled.
++
++This design reduces accidental exposure, but it is not a sandbox or a substitute for operating-system access controls. Run it with the least filesystem permissions required.
++
++## Event schema
++
++Each JSON Lines event includes:
++
++```json
++{
++  "step": 1,
++  "at": "2026-08-04T00:00:00.000Z",
++  "character": {
++    "id": "orchestra-core",
++    "name": "Orchestra Core",
++    "sprite": "🍜",
++    "role": "Chef Spirit",
++    "responsibility": "Meta-orchestration and kitchen consciousness"
++  },
++  "action": "studies the kitchen lore",
++  "root": "/workspace/repo",
++  "path": "/workspace/repo/README.md",
++  "displayPath": "README.md",
++  "visitedCount": 2
++}
++```
++
++A secret-like absolute path is emitted as `[redacted]`, and any secret-like path segment in `displayPath` is replaced with `[redacted]`.
++
++## GitHub Actions
++
++The included workflow validates Node.js 20, 22, and 24, runs syntax and test checks, and executes a deterministic bounded demonstration. Workflow permissions are read-only.
++
++## Architecture
++
++```text
++repo-shemi-roamer/
++├── bin/
++│   └── shemi-roamer.mjs
++├── src/
++│   ├── characters.js
++│   ├── cli-options.js
++│   ├── index.js
++│   ├── random.js
++│   ├── safety.js
++│   └── terminal-renderer.js
++├── test/
++│   ├── cli.test.js
++│   ├── roamer.test.js
++│   └── safety.test.js
++├── .github/workflows/shemi-roamer.yml
++├── CHANGELOG.md
++├── LICENSE
++├── README.md
++└── package.json
++```
++
++## Extending the roster
++
++Add a profile to `src/characters.js` with a unique `id`, display metadata, preferred paths, and preferred files. Profiles influence weighted traversal only; they do not grant capabilities or bypass safety controls.
+diff --git a/bin/shemi-roamer.mjs b/bin/shemi-roamer.mjs
+new file mode 100755
+index 0000000..407887f
+--- /dev/null
++++ b/bin/shemi-roamer.mjs
+@@ -0,0 +1,104 @@
++#!/usr/bin/env node
++import process from "node:process";
++import readline from "node:readline";
++import { readFile } from "node:fs/promises";
++import { fileURLToPath } from "node:url";
++import path from "node:path";
++import { RepoRoamer, formatEventLine, listCharacters } from "../src/index.js";
++import { HELP_TEXT, parseArgs } from "../src/cli-options.js";
++import { clearScreen, hideCursor, renderTerminal, showCursor } from "../src/terminal-renderer.js";
++
++const packagePath = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../package.json");
++
++function setupKeyboard(onQuit) {
++  if (!process.stdin.isTTY) return;
++  readline.emitKeypressEvents(process.stdin);
++  process.stdin.setRawMode(true);
++  process.stdin.on("keypress", (_, key) => {
++    if (key?.name === "q" || (key?.ctrl && key?.name === "c")) onQuit();
++  });
++}
++
++async function readVersion() {
++  const packageJson = JSON.parse(await readFile(packagePath, "utf8"));
++  return packageJson.version;
++}
++
++async function main() {
++  const options = parseArgs(process.argv.slice(2));
++
++  if (options.help) {
++    process.stdout.write(HELP_TEXT);
++    return;
++  }
++
++  if (options.version) {
++    console.log(await readVersion());
++    return;
++  }
++
++  if (options.listCharacters) {
++    for (const character of listCharacters()) {
++      console.log(
++        `${character.number}. ${character.name} (${character.id}) — ${character.kitchenRole}: ${character.responsibility}`
++      );
++    }
++    return;
++  }
++
++  const roamer = new RepoRoamer(options);
++  await roamer.initialize();
++
++  if (options.steps !== null) {
++    for (let index = 0; index < options.steps; index += 1) {
++      const event = await roamer.step();
++      console.log(options.json ? JSON.stringify(event) : formatEventLine(event));
++    }
++    return;
++  }
++
++  if (!process.stdout.isTTY && !options.json) {
++    throw new Error("Live terminal mode requires a TTY. Use --steps=<n> or --json.");
++  }
++
++  const trail = [];
++  let stopped = false;
++  let cleaned = false;
++
++  const cleanup = () => {
++    if (cleaned) return;
++    cleaned = true;
++    if (process.stdin.isTTY) process.stdin.setRawMode(false);
++    showCursor();
++  };
++
++  const quit = () => {
++    stopped = true;
++    cleanup();
++    if (process.stdout.isTTY && !options.json) clearScreen();
++    console.log("🍜 Repo Shemi returned to the pass.");
++  };
++
++  setupKeyboard(quit);
++  if (!options.json) hideCursor();
++  process.once("SIGINT", quit);
++  process.once("SIGTERM", quit);
++  process.once("exit", cleanup);
++
++  while (!stopped) {
++    const event = await roamer.step();
++    if (options.json) {
++      console.log(JSON.stringify(event));
++    } else {
++      trail.unshift(formatEventLine(event));
++      await renderTerminal(event, roamer, trail);
++    }
++    await new Promise(resolve => setTimeout(resolve, options.tickMs));
++  }
++}
++
++main().catch(error => {
++  showCursor();
++  console.error(error instanceof Error ? error.message : String(error));
++  process.exitCode = 1;
++});
+diff --git a/package-lock.json b/package-lock.json
+new file mode 100644
+index 0000000..75c294e
+--- /dev/null
++++ b/package-lock.json
+@@ -0,0 +1,19 @@
++{
++  "name": "repo-shemi-roamer",
++  "version": "0.1.0",
++  "lockfileVersion": 3,
++  "requires": true,
++  "packages": {
++    "": {
++      "name": "repo-shemi-roamer",
++      "version": "0.1.0",
++      "license": "MIT",
++      "bin": {
++        "shemi": "bin/shemi-roamer.mjs"
++      },
++      "engines": {
++        "node": ">=20"
++      }
++    }
++  }
++}
+diff --git a/package.json b/package.json
+new file mode 100644
+index 0000000..76ec1ed
+--- /dev/null
++++ b/package.json
+@@ -0,0 +1,42 @@
++{
++  "name": "repo-shemi-roamer",
++  "version": "0.1.0",
++  "type": "module",
++  "description": "A read-only Shimeji-style terminal mascot that safely roams repositories and container filesystems.",
++  "license": "MIT",
++  "bin": {
++    "shemi": "./bin/shemi-roamer.mjs"
++  },
++  "exports": {
++    ".": "./src/index.js",
++    "./characters": "./src/characters.js",
++    "./safety": "./src/safety.js"
++  },
++  "scripts": {
++    "start": "node bin/shemi-roamer.mjs .",
++    "roam:repo": "node bin/shemi-roamer.mjs . --max-depth=6 --tick=650",
++    "roam:container": "node bin/shemi-roamer.mjs / --max-depth=4 --tick=800",
++    "demo": "node bin/shemi-roamer.mjs . --steps=8 --seed=miseos",
++    "demo:jsonl": "node bin/shemi-roamer.mjs . --steps=8 --seed=miseos --json",
++    "list:characters": "node bin/shemi-roamer.mjs --list-characters",
++    "test": "node --test",
++    "check": "node --check bin/shemi-roamer.mjs && node --test"
++  },
++  "engines": {
++    "node": ">=20"
++  },
++  "files": [
++    "bin/",
++    "src/",
++    "README.md",
++    "LICENSE"
++  ],
++  "keywords": [
++    "cli",
++    "filesystem",
++    "mascot",
++    "shimeji",
++    "terminal",
++    "miseos"
++  ]
++}
+diff --git a/src/characters.js b/src/characters.js
+new file mode 100644
+index 0000000..2d846d0
+--- /dev/null
++++ b/src/characters.js
+@@ -0,0 +1,50 @@
++const CHARACTERS = Object.freeze([
++  Object.freeze({
++    id: "orchestra-core",
++    number: 1,
++    name: "Orchestra Core",
++    sprite: "🍜",
++    kitchenRole: "Chef Spirit",
++    responsibility: "Meta-orchestration and kitchen consciousness",
++    preferredPaths: ["."],
++    preferredFiles: ["package.json", "README.md", ".github"]
++  }),
++  Object.freeze({
++    id: "kurogami-senpai",
++    number: 2,
++    name: "Kurogami Senpai",
++    sprite: "🥢",
++    kitchenRole: "Chef de Cuisine",
++    responsibility: "System orchestration and repository direction",
++    preferredPaths: ["src", "bin", ".github"],
++    preferredFiles: ["README.md", "package.json"]
++  }),
++  Object.freeze({
++    id: "seira",
++    number: 3,
++    name: "Seira",
++    sprite: "🧂",
++    kitchenRole: "Sommelier",
++    responsibility: "Secrets, vault safety, and sensitive ingredients",
++    preferredPaths: ["config", "infra", "auth", "security"],
++    preferredFiles: [".env.example", "policy", "security"]
++  }),
++  Object.freeze({
++    id: "build-kun",
++    number: 4,
++    name: "Build-Kun",
++    sprite: "🏗️",
++    kitchenRole: "Boulanger",
++    responsibility: "Build recipes, containers, and generated assets",
++    preferredPaths: ["docker", "build", "dist", "bin"],
++    preferredFiles: ["Dockerfile", "package.json"]
++  })
++]);
++
++export function listCharacters() {
++  return [...CHARACTERS].sort((a, b) => a.number - b.number);
++}
++
++export function findCharacter(id = "orchestra-core") {
++  return CHARACTERS.find(character => character.id === id) ?? CHARACTERS[0];
++}
+diff --git a/src/cli-options.js b/src/cli-options.js
+new file mode 100644
+index 0000000..5900086
+--- /dev/null
++++ b/src/cli-options.js
+@@ -0,0 +1,63 @@
++export const HELP_TEXT = `Repo Shemi Roamer
++
++Usage:
++  shemi [root] [options]
++
++Options:
++  --character=<id>    Select a mascot profile
++  --max-depth=<n>     Maximum traversal depth (default: 5)
++  --tick=<ms>         Delay between live steps (default: 700)
++  --steps=<n>         Run a finite number of steps
++  --seed=<value>      Use deterministic traversal
++  --peek              Read the first useful line of safe small text files
++  --json              Emit JSON Lines instead of terminal UI
++  --show-hidden       Include hidden entries except ignored or secret paths
++  --list-characters   Print available mascot profiles
++  --help              Print this help
++  --version           Print the package version
++`;
++
++export function parseArgs(argv) {
++  const options = {
++    root: ".",
++    character: "orchestra-core",
++    maxDepth: 5,
++    tickMs: 700,
++    steps: null,
++    seed: null,
++    peek: false,
++    json: false,
++    showHidden: false,
++    listCharacters: false,
++    help: false,
++    version: false
++  };
++
++  for (const arg of argv) {
++    if (arg.startsWith("--character=")) options.character = arg.slice("--character=".length);
++    else if (arg.startsWith("--max-depth=")) options.maxDepth = Number(arg.slice("--max-depth=".length));
++    else if (arg.startsWith("--tick=")) options.tickMs = Number(arg.slice("--tick=".length));
++    else if (arg.startsWith("--steps=")) options.steps = Number(arg.slice("--steps=".length));
++    else if (arg.startsWith("--seed=")) options.seed = arg.slice("--seed=".length);
++    else if (arg === "--peek") options.peek = true;
++    else if (arg === "--json") options.json = true;
++    else if (arg === "--show-hidden") options.showHidden = true;
++    else if (arg === "--list-characters") options.listCharacters = true;
++    else if (arg === "--help" || arg === "-h") options.help = true;
++    else if (arg === "--version" || arg === "-v") options.version = true;
++    else if (!arg.startsWith("--")) options.root = arg;
++    else throw new Error(`Unknown option: ${arg}`);
++  }
++
++  if (!Number.isInteger(options.maxDepth) || options.maxDepth < 1) {
++    throw new Error("--max-depth must be a positive integer");
++  }
++  if (!Number.isInteger(options.tickMs) || options.tickMs < 100) {
++    throw new Error("--tick must be an integer of at least 100 milliseconds");
++  }
++  if (options.steps !== null && (!Number.isInteger(options.steps) || options.steps < 1)) {
++    throw new Error("--steps must be a positive integer");
++  }
++
++  return options;
++}
+diff --git a/src/index.js b/src/index.js
+new file mode 100644
+index 0000000..2815f55
+--- /dev/null
++++ b/src/index.js
+@@ -0,0 +1,227 @@
++import fs from "node:fs/promises";
++import path from "node:path";
++import { findCharacter } from "./characters.js";
++import { createRandom } from "./random.js";
++import {
++  CODE_EXTENSIONS,
++  isAllowedHiddenName,
++  isHiddenName,
++  isIgnoredEntry,
++  isSecretish,
++  maskPath,
++  relativeDepth,
++  truncate
++} from "./safety.js";
++
++const FILE_PERSONALITIES = [
++  { test: file => /package\.json$/i.test(file), action: "aligns the service board" },
++  { test: file => /README\.md$/i.test(file), action: "studies the kitchen lore" },
++  { test: file => /AGENTS\.md$|CLAUDE\.md$/i.test(file), action: "reviews the brigade instructions" },
++  { test: file => /\.github|workflows/i.test(file), action: "checks the delivery pass" },
++  { test: file => /Dockerfile$|\.dockerfile$/i.test(file), action: "checks the container oven" },
++  { test: file => /test|spec/i.test(file), action: "tastes the quality gate" },
++  { test: file => /security|policy|auth/i.test(file), action: "guards the pantry locks" },
++  { test: file => /api|route|connector/i.test(file), action: "stirs the API sauce" },
++  { test: file => /log|metric|event|stream/i.test(file), action: "follows the data current" },
++  { test: file => /\.(js|mjs|cjs|ts|tsx|jsx)$/i.test(file), action: "checks the recipe logic" },
++  { test: file => /\.(md|mdx|txt)$/i.test(file), action: "reads the station notes" },
++  { test: file => /\.(ya?ml|toml|json)$/i.test(file), action: "studies the configuration spices" }
++];
++
++export class RepoRoamer {
++  constructor(options = {}) {
++    this.root = path.resolve(options.root ?? ".");
++    this.current = this.root;
++    this.maxDepth = Number.isFinite(options.maxDepth) ? options.maxDepth : 5;
++    this.peek = Boolean(options.peek);
++    this.showHidden = Boolean(options.showHidden);
++    this.character = findCharacter(options.character ?? "orchestra-core");
++    this.random = typeof options.random === "function" ? options.random : createRandom(options.seed);
++    this.visited = new Set([this.root]);
++    this.stepCount = 0;
++  }
++
++  async initialize() {
++    const stat = await this.safeStat(this.root);
++    if (!stat || !stat.isDirectory()) {
++      throw new Error(`Root must be an existing directory: ${this.root}`);
++    }
++  }
++
++  async safeStat(absPath) {
++    try {
++      return await fs.lstat(absPath);
++    } catch {
++      return null;
++    }
++  }
++
++  async safeListDir(absPath) {
++    try {
++      const entries = await fs.readdir(absPath, { withFileTypes: true });
++      return {
++        entries: entries
++          .filter(entry => this.showHidden || !isHiddenName(entry.name) || isAllowedHiddenName(entry.name))
++          .filter(entry => !isIgnoredEntry(path.join(absPath, entry.name), entry.name, this.root))
++          .filter(entry => !entry.isSymbolicLink())
++          .sort((a, b) => {
++            if (a.isDirectory() && !b.isDirectory()) return -1;
++            if (!a.isDirectory() && b.isDirectory()) return 1;
++            return a.name.localeCompare(b.name);
++          }),
++        error: null
++      };
++    } catch (error) {
++      return {
++        entries: [],
++        error: error instanceof Error ? error.message : String(error)
++      };
++    }
++  }
++
++  scoreCandidate(absPath, stat) {
++    const relative = path.relative(this.root, absPath) || ".";
++    const lower = relative.toLowerCase();
++    let score = stat?.isDirectory() ? 5 : 2;
++
++    for (const preferred of this.character.preferredPaths ?? []) {
++      if (preferred === "." && relative === ".") score += 2;
++      else if (preferred !== "." && lower.includes(preferred.toLowerCase())) score += 7;
++    }
++
++    for (const preferred of this.character.preferredFiles ?? []) {
++      const target = preferred.replaceAll("*", "").toLowerCase();
++      if (target && lower.includes(target)) score += 8;
++    }
++
++    if (isSecretish(relative)) score = 1;
++    return Math.max(1, score);
++  }
++
++  chooseWeighted(items) {
++    if (items.length === 0) return null;
++    const total = items.reduce((sum, item) => sum + item.weight, 0);
++    let roll = this.random() * total;
++
++    for (const item of items) {
++      roll -= item.weight;
++      if (roll <= 0) return item.value;
++    }
++
++    return items.at(-1)?.value ?? null;
++  }
++
++  async maybePeekFile(absPath) {
++    if (!this.peek || isSecretish(absPath)) return null;
++
++    const extension = path.extname(absPath).toLowerCase();
++    const base = path.basename(absPath);
++    if (!CODE_EXTENSIONS.has(extension) && base !== "Dockerfile") return null;
++
++    const stat = await this.safeStat(absPath);
++    if (!stat || !stat.isFile() || stat.size > 80_000) return null;
++
++    try {
++      const content = await fs.readFile(absPath, "utf8");
++      const firstUsefulLine = content
++        .split(/\r?\n/)
++        .map(line => line.trim())
++        .find(line => line && !line.startsWith("//") && !line.startsWith("#"));
++      return firstUsefulLine ? truncate(firstUsefulLine, 100) : "[empty or comments only]";
++    } catch {
++      return null;
++    }
++  }
++
++  describeFile(absPath) {
++    const match = FILE_PERSONALITIES.find(rule => rule.test(absPath));
++    return match?.action ?? "pokes an unfamiliar artifact";
++  }
++
++  makeEvent(action, target, extra = {}) {
++    return {
++      step: this.stepCount,
++      at: new Date().toISOString(),
++      character: {
++        id: this.character.id,
++        name: this.character.name,
++        sprite: this.character.sprite,
++        role: this.character.kitchenRole,
++        responsibility: this.character.responsibility
++      },
++      action,
++      root: this.root,
++      path: isSecretish(target) ? "[redacted]" : target,
++      displayPath: maskPath(target, this.root),
++      visitedCount: this.visited.size,
++      ...extra
++    };
++  }
++
++  async step() {
++    this.stepCount += 1;
++    const currentStat = await this.safeStat(this.current);
++
++    if (!currentStat) {
++      const parent = path.dirname(this.current);
++      this.current = parent === this.current ? this.root : parent;
++      return this.makeEvent("retreats from a missing station", this.current);
++    }
++
++    if (currentStat.isFile()) {
++      const previous = this.current;
++      this.current = path.dirname(this.current);
++      return this.makeEvent("returns to the pass", previous);
++    }
++
++    const { entries, error } = await this.safeListDir(this.current);
++    if (error) {
++      const previous = this.current;
++      const parent = path.dirname(this.current);
++      this.current = parent === this.current ? this.root : parent;
++      return this.makeEvent("avoids a locked room", previous, { reason: error });
++    }
++
++    const depth = relativeDepth(this.root, this.current);
++    const choices = [];
++
++    for (const entry of entries) {
++      const absolute = path.join(this.current, entry.name);
++      const stat = await this.safeStat(absolute);
++      if (!stat) continue;
++      if (entry.isDirectory() && depth >= this.maxDepth) continue;
++      if (!entry.isDirectory() && !entry.isFile()) continue;
++      choices.push({ value: absolute, weight: this.scoreCandidate(absolute, stat) });
++    }
++
++    const parent = path.dirname(this.current);
++    if (this.current !== this.root && parent !== this.current) {
++      choices.push({ value: parent, weight: 3 });
++    }
++
++    const chosen = this.chooseWeighted(choices);
++    if (!chosen) {
++      if (this.current !== this.root && parent !== this.current) this.current = parent;
++      return this.makeEvent("finds a dead end and turns around", this.current);
++    }
++
++    const chosenStat = await this.safeStat(chosen);
++    this.current = chosen;
++    this.visited.add(chosen);
++
++    if (chosenStat?.isDirectory()) {
++      return this.makeEvent("steps into the next station", chosen);
++    }
++
++    const peek = await this.maybePeekFile(chosen);
++    return this.makeEvent(this.describeFile(chosen), chosen, peek ? { peek } : {});
++  }
++}
++
++export function formatEventLine(event) {
++  const peek = event.peek ? ` | peek: ${event.peek}` : "";
++  return `${event.character.sprite} ${event.character.name} ${event.action}: ${event.displayPath}${peek}`;
++}
++
++export { listCharacters, findCharacter } from "./characters.js";
++export { createRandom } from "./random.js";
+diff --git a/src/random.js b/src/random.js
+new file mode 100644
+index 0000000..24ad584
+--- /dev/null
++++ b/src/random.js
+@@ -0,0 +1,21 @@
++function hashString(value) {
++  let hash = 2166136261;
++  for (const character of String(value)) {
++    hash ^= character.codePointAt(0) ?? 0;
++    hash = Math.imul(hash, 16777619);
++  }
++  return hash >>> 0;
++}
++
++export function createRandom(seed) {
++  if (seed === undefined || seed === null || seed === "") return Math.random;
++
++  let state = hashString(seed) || 0x9e3779b9;
++  return function seededRandom() {
++    state += 0x6d2b79f5;
++    let value = state;
++    value = Math.imul(value ^ (value >>> 15), value | 1);
++    value ^= value + Math.imul(value ^ (value >>> 7), value | 61);
++    return ((value ^ (value >>> 14)) >>> 0) / 4294967296;
++  };
++}
+diff --git a/src/safety.js b/src/safety.js
+new file mode 100644
+index 0000000..74e7d2e
+--- /dev/null
++++ b/src/safety.js
+@@ -0,0 +1,106 @@
++import path from "node:path";
++
++export const DEFAULT_IGNORED_NAMES = new Set([
++  ".git",
++  "node_modules",
++  ".next",
++  ".turbo",
++  ".cache",
++  "dist",
++  "build",
++  "coverage",
++  "__pycache__",
++  ".venv",
++  "venv",
++  "proc",
++  "sys",
++  "dev",
++  "run",
++  "tmp"
++]);
++
++export const DEFAULT_IGNORED_PATHS = new Set([
++  "var/lib",
++  "var/cache",
++  "var/log"
++]);
++
++export const SAFE_HIDDEN_NAMES = new Set([
++  ".github",
++  ".devcontainer",
++  ".changeset"
++]);
++
++export const SECRETISH_RE =
++  /(^\.env(?:\.|$)|secret|token|credential|private[_-]?key|id_rsa|id_dsa|\.pem$|\.p12$|\.key$|kubeconfig|password|passwd|auth\.json)/i;
++
++export const CODE_EXTENSIONS = new Set([
++  ".js",
++  ".mjs",
++  ".cjs",
++  ".ts",
++  ".tsx",
++  ".jsx",
++  ".py",
++  ".go",
++  ".rs",
++  ".java",
++  ".cs",
++  ".php",
++  ".rb",
++  ".md",
++  ".mdx",
++  ".txt",
++  ".json",
++  ".yaml",
++  ".yml",
++  ".toml",
++  ".html",
++  ".css"
++]);
++
++export function truncate(value, max = 90) {
++  const text = String(value);
++  if (text.length <= max) return text;
++  return `${text.slice(0, Math.max(0, max - 1))}…`;
++}
++
++export function isHiddenName(name) {
++  return name.startsWith(".");
++}
++
++export function isAllowedHiddenName(name) {
++  return SAFE_HIDDEN_NAMES.has(name);
++}
++
++export function isIgnoredEntry(absPath, name, root = path.parse(absPath).root) {
++  if (DEFAULT_IGNORED_NAMES.has(name)) return true;
++
++  const relative = path.relative(root, absPath).split(path.sep).join("/");
++  return [...DEFAULT_IGNORED_PATHS].some(
++    ignored => relative === ignored || relative.startsWith(`${ignored}/`)
++  );
++}
++
++export function isSecretish(nameOrPath) {
++  return String(nameOrPath)
++    .split(/[\\/]/)
++    .some(segment => SECRETISH_RE.test(segment));
++}
++
++export function relativeDepth(root, target) {
++  const relative = path.relative(root, target);
++  if (!relative || relative === ".") return 0;
++  return relative.split(path.sep).filter(Boolean).length;
++}
++
++export function maskPath(target, root) {
++  const relative = path.relative(root, target);
++  if (!relative || relative === ".") return ".";
++
++  return relative
++    .split(path.sep)
++    .filter(Boolean)
++    .map(segment => (SECRETISH_RE.test(segment) ? "[redacted]" : segment))
++    .join("/");
++}
+diff --git a/src/terminal-renderer.js b/src/terminal-renderer.js
+new file mode 100644
+index 0000000..56bef01
+--- /dev/null
++++ b/src/terminal-renderer.js
+@@ -0,0 +1,41 @@
++export function clearScreen() {
++  process.stdout.write("\x1b[2J\x1b[H");
++}
++
++export function hideCursor() {
++  process.stdout.write("\x1b[?25l");
++}
++
++export function showCursor() {
++  process.stdout.write("\x1b[?25h");
++}
++
++export async function renderTerminal(event, roamer, trail) {
++  clearScreen();
++
++  console.log("Repo Shemi Roamer");
++  console.log("────────────────────────────────────────────────────────────");
++  console.log(`Sprite:        ${event.character.sprite}`);
++  console.log(`Character:     ${event.character.name}`);
++  console.log(`Root:          ${roamer.root}`);
++  console.log(`Current:       ${event.displayPath}`);
++  console.log(`Mode:          ${roamer.peek ? "peek-safe read mode" : "metadata-only read mode"}`);
++  console.log(`Visited paths: ${roamer.visited.size}`);
++  console.log(`Step:          ${event.step}`);
++  console.log("");
++
++  console.log(`${event.character.sprite} ${event.action}: ${event.displayPath}`);
++  if (event.peek) console.log(`Peek: ${event.peek}`);
++  console.log("");
++
++  console.log("Recent trail");
++  console.log("────────────────────────────────────────────────────────────");
++  if (trail.length === 0) {
++    console.log("  The little repo chef is waking up...");
++  } else {
++    for (const line of trail.slice(0, 10)) console.log(`  ${line}`);
++  }
++
++  console.log("");
++  console.log("Press q to quit.");
++}
+diff --git a/test/cli.test.js b/test/cli.test.js
+new file mode 100644
+index 0000000..a9e1602
+--- /dev/null
++++ b/test/cli.test.js
+@@ -0,0 +1,42 @@
++import test from "node:test";
++import assert from "node:assert/strict";
++import { spawn } from "node:child_process";
++import path from "node:path";
++import { fileURLToPath } from "node:url";
++
++const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
++
++function runCli(args) {
++  return new Promise((resolve, reject) => {
++    const child = spawn(process.execPath, ["bin/shemi-roamer.mjs", ...args], {
++      cwd: repoRoot,
++      stdio: ["ignore", "pipe", "pipe"]
++    });
++    let stdout = "";
++    let stderr = "";
++    child.stdout.setEncoding("utf8");
++    child.stderr.setEncoding("utf8");
++    child.stdout.on("data", chunk => { stdout += chunk; });
++    child.stderr.on("data", chunk => { stderr += chunk; });
++    child.once("error", reject);
++    child.once("close", code => resolve({ code, stdout, stderr }));
++  });
++}
++
++test("finite JSON mode emits valid JSON Lines", async () => {
++  const result = await runCli([".", "--steps=3", "--seed=test", "--json"]);
++  assert.equal(result.code, 0, result.stderr);
++  const lines = result.stdout.trim().split("\n");
++  assert.equal(lines.length, 3);
++  for (const line of lines) {
++    const event = JSON.parse(line);
++    assert.equal(typeof event.step, "number");
++    assert.equal(typeof event.displayPath, "string");
++  }
++});
++
++test("unknown options fail clearly", async () => {
++  const result = await runCli(["--not-a-real-option"]);
++  assert.equal(result.code, 1);
++  assert.match(result.stderr, /Unknown option/);
++});
+diff --git a/test/roamer.test.js b/test/roamer.test.js
+new file mode 100644
+index 0000000..a0049ee
+--- /dev/null
++++ b/test/roamer.test.js
+@@ -0,0 +1,51 @@
++import test from "node:test";
++import assert from "node:assert/strict";
++import fs from "node:fs/promises";
++import os from "node:os";
++import path from "node:path";
++import { RepoRoamer } from "../src/index.js";
++
++async function makeFixture() {
++  const root = await fs.mkdtemp(path.join(os.tmpdir(), "shemi-roamer-"));
++  await fs.mkdir(path.join(root, "src"));
++  await fs.mkdir(path.join(root, ".github", "workflows"), { recursive: true });
++  await fs.writeFile(path.join(root, "README.md"), "# Fixture\n", "utf8");
++  await fs.writeFile(path.join(root, "package.json"), '{"name":"fixture"}\n', "utf8");
++  await fs.writeFile(path.join(root, "src", "index.js"), "export const value = 1;\n", "utf8");
++  await fs.writeFile(path.join(root, ".env"), "TOKEN=do-not-read\n", "utf8");
++  return root;
++}
++
++async function collect(root, seed) {
++  const roamer = new RepoRoamer({ root, seed, maxDepth: 4, peek: true });
++  await roamer.initialize();
++  const events = [];
++  for (let index = 0; index < 12; index += 1) {
++    const event = await roamer.step();
++    events.push({ action: event.action, displayPath: event.displayPath, peek: event.peek ?? null });
++  }
++  return events;
++}
++
++test("seeded traversal is reproducible", async t => {
++  const root = await makeFixture();
++  t.after(() => fs.rm(root, { recursive: true, force: true }));
++
++  assert.deepEqual(await collect(root, "miseos"), await collect(root, "miseos"));
++});
++
++test("default traversal never exposes secret path names or contents", async t => {
++  const root = await makeFixture();
++  t.after(() => fs.rm(root, { recursive: true, force: true }));
++
++  const events = await collect(root, "secrets-check");
++  const serialized = JSON.stringify(events);
++  assert.equal(serialized.includes(".env"), false);
++  assert.equal(serialized.includes("do-not-read"), false);
++  assert.equal(serialized.includes("TOKEN="), false);
++});
++
++test("initialize rejects a missing root", async () => {
++  const roamer = new RepoRoamer({ root: path.join(os.tmpdir(), "missing-shemi-root") });
++  await assert.rejects(() => roamer.initialize(), /Root must be an existing directory/);
++});
+diff --git a/test/safety.test.js b/test/safety.test.js
+new file mode 100644
+index 0000000..49055c4
+--- /dev/null
++++ b/test/safety.test.js
+@@ -0,0 +1,32 @@
++import test from "node:test";
++import assert from "node:assert/strict";
++import path from "node:path";
++import {
++  isAllowedHiddenName,
++  isIgnoredEntry,
++  isSecretish,
++  maskPath,
++  truncate
++} from "../src/safety.js";
++
++test("secret-like path segments are detected and redacted", () => {
++  const root = path.resolve("/tmp/example");
++  const target = path.join(root, "config", ".env.production", "value.txt");
++  assert.equal(isSecretish(target), true);
++  assert.equal(maskPath(target, root), "config/[redacted]/value.txt");
++});
++
++test("safe hidden project directories remain discoverable", () => {
++  assert.equal(isAllowedHiddenName(".github"), true);
++  assert.equal(isAllowedHiddenName(".env"), false);
++});
++
++test("ignored system paths are skipped relative to the traversal root", () => {
++  assert.equal(isIgnoredEntry("/var/log/app.log", "log", "/"), true);
++  assert.equal(isIgnoredEntry("/workspace/src", "src", "/workspace"), false);
++});
++
++test("truncate handles short and long values", () => {
++  assert.equal(truncate("abc", 4), "abc");
++  assert.equal(truncate("abcdef", 4), "abc…");
++});
