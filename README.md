@@ -57,6 +57,7 @@ npm install
 After installation the `shemi` binary is available via `npx` or directly:
 
 ```bash
+npx shemi --help
 node bin/shemi-roamer.mjs --help
 ```
 
@@ -67,13 +68,13 @@ node bin/shemi-roamer.mjs --help
 | Script | Command | Purpose |
 |---|---|---|
 | `npm start` | `node bin/shemi-roamer.mjs .` | Start live roaming in the current directory |
-| `npm run roam:repo` | `… --max-depth=6 --tick=650` | Live repo roam, depth 6, 650 ms tick |
-| `npm run roam:container` | `… / --max-depth=4 --tick=800` | Live container filesystem roam |
-| `npm run demo` | `… --steps=8 --seed=miseos` | Bounded 8-step deterministic demo |
-| `npm run demo:jsonl` | `… --steps=8 --seed=miseos --json` | Same demo, JSON Lines output |
-| `npm run list:characters` | `… --list-characters` | Print all available mascot profiles |
+| `npm run roam:repo` | `node bin/shemi-roamer.mjs . --max-depth=6 --tick=650` | Live repo roam, depth 6, 650 ms tick |
+| `npm run roam:container` | `node bin/shemi-roamer.mjs / --max-depth=4 --tick=800` | Live container filesystem roam |
+| `npm run demo` | `node bin/shemi-roamer.mjs . --steps=8 --seed=miseos` | Bounded 8-step deterministic demo |
+| `npm run demo:jsonl` | `node bin/shemi-roamer.mjs . --steps=8 --seed=miseos --json` | Same demo, JSON Lines output |
+| `npm run list:characters` | `node bin/shemi-roamer.mjs --list-characters` | Print all available mascot profiles |
 | `npm test` | `node --test` | Run the built-in Node.js test suite |
-| `npm run check` | syntax check + tests | Full pre-commit validation |
+| `npm run check` | `node --check bin/shemi-roamer.mjs && node --test` | Full pre-commit validation |
 
 ---
 
@@ -175,7 +176,7 @@ When `--peek` is enabled, a file is only read if **all** of the following condit
 1. `--peek` is explicitly passed on the command line.
 2. The file extension is one of: `.js .mjs .cjs .ts .tsx .jsx .py .go .rs .java .cs .php .rb .md .mdx .txt .json .yaml .yml .toml .html .css` — or the basename is exactly `Dockerfile`.
 3. The file is not secret-like (see above).
-4. The file size is **≤ 80 KB**.
+4. The file size is **≤ 80,000 bytes**.
 5. The file is a regular file (not a symlink, directory, or special file).
 
 The value emitted in the `peek` field is the **first non-empty, non-comment line** of the file (truncated to 100 characters). Lines starting with `//` or `#` are skipped. If no such line exists the value is `[empty or comments only]`.
@@ -250,7 +251,7 @@ This prevents silent hangs in scripts and CI runners.
 ## Architecture
 
 ```text
-repo-shemi-roamer/
+Repo-Shemi-Roamer/
 ├── bin/
 │   └── shemi-roamer.mjs   # CLI entrypoint; argument parsing, run loop, signal handling
 ├── src/
