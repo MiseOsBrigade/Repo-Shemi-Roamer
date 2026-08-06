@@ -10,10 +10,10 @@
   "scripts": {
     "build": "pnpm -r build",
     "dev": "pnpm --filter @miseos/api dev",
-    "test": "pnpm -r test",
-    "lint": "eslint .",
-    "typecheck": "pnpm -r typecheck",
-    "validate:catalog": "pnpm --filter @miseos/cli start catalog validate",
+    "test": "pnpm --filter @miseos/core build && pnpm -r test",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm --filter @miseos/core build && pnpm -r typecheck",
+    "validate:catalog": "pnpm --filter @miseos/core build && pnpm --filter @miseos/cli start catalog validate",
     "miseos": "pnpm --filter @miseos/cli start",
     "verify": "pnpm lint && pnpm typecheck && pnpm test && pnpm validate:catalog && pnpm build"
   },
@@ -22,15 +22,5 @@
     "eslint": "^9.17.0",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.18.0"
-  },
-  "description": "Character-native agent operations platform with a governed registry, bounded runtime, Fastify API, and CLI.",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/MiseOsBrigade/Repo-Shemi-Roamer.git"
-  },
-  "bugs": {
-    "url": "https://github.com/MiseOsBrigade/Repo-Shemi-Roamer/issues"
-  },
-  "homepage": "https://github.com/MiseOsBrigade/Repo-Shemi-Roamer/tree/main/MiseOS-developer-platform#readme"
+  }
 }

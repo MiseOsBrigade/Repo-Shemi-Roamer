@@ -1,5 +1,24 @@
 {
-  "name":"@miseos/cli","version":"1.0.0","type":"module","bin":{"miseos":"dist/index.js"},"private":true,
-  "scripts":{"build":"tsc -p tsconfig.json","typecheck":"tsc -p tsconfig.json --noEmit","start":"tsx src/index.ts","test":"node --test --import tsx src/*.test.ts"},
-  "dependencies":{"@miseos/core":"workspace:*","commander":"^13.0.0"},"devDependencies":{"tsx":"^4.19.2","@types/node":"^22.10.2"}
+  "name": "@miseos/cli",
+  "version": "1.0.0",
+  "type": "module",
+  "bin": {
+    "miseos": "dist/index.js"
+  },
+  "private": true,
+  "scripts": {
+    "lint": "eslint src",
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node --test --import tsx src/*.test.ts",
+    "start": "tsx src/index.ts"
+  },
+  "dependencies": {
+    "@miseos/core": "workspace:*",
+    "commander": "^13.0.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.2",
+    "@types/node": "^22.10.2"
+  }
 }

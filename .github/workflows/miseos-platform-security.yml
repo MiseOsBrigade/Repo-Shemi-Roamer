@@ -19,6 +19,22 @@ permissions:
   security-events: write
 
 jobs:
+  verify-platform:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: MiseOS-developer-platform
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: pnpm install --no-frozen-lockfile
+      - run: pnpm verify
+
   secret-scan:
     runs-on: ubuntu-latest
     steps:
