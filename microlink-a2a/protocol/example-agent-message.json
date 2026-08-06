@@ -1,0 +1,17 @@
+{
+  "protocol": "miseos.microlink.a2a.v1",
+  "messageId": "66ebf5b8-02fd-485c-8f52-b8cf2f8d0f54",
+  "sourceAgent": "7306cd77-4022-444a-b9b9-2ad1a906f962",
+  "destinationAgent": "7418f88b-e499-4ee4-96ac-1a8291a6ab11",
+  "channelId": "eaa006f7-4dbe-403c-8fdd-e27c3d3ddc27",
+  "sequence": 42,
+  "timestampNs": 1785842100000000000,
+  "ttlMs": 5000,
+  "type": "TASK",
+  "priority": 5,
+  "capability": "research.read",
+  "payload": {
+    "instruction": "Validate the evidence bundle and return a confidence score.",
+    "evidenceRefs": ["sha256:example"]
+  }
+}
