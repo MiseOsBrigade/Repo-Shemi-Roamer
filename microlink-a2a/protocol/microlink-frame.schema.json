@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://miseos.dev/schemas/microlink-a2a-v1.json",
+  "title": "MiseOS μLink A2A Envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol", "messageId", "sourceAgent", "destinationAgent",
+    "channelId", "sequence", "timestampNs", "ttlMs", "type", "payload"
+  ],
+  "properties": {
+    "protocol": { "const": "miseos.microlink.a2a.v1" },
+    "messageId": { "type": "string", "format": "uuid" },
+    "sourceAgent": { "type": "string", "format": "uuid" },
+    "destinationAgent": { "type": "string", "format": "uuid" },
+    "channelId": { "type": "string", "format": "uuid" },
+    "sequence": { "type": "integer", "minimum": 0 },
+    "timestampNs": { "type": "integer", "minimum": 0 },
+    "ttlMs": { "type": "integer", "minimum": 1, "maximum": 600000 },
+    "type": {
+      "enum": [
+        "TASK", "OBSERVATION", "EVIDENCE", "PROPOSAL",
+        "APPROVAL_REQUEST", "APPROVAL_DECISION", "STATUS", "CONTROL"
+      ]
+    },
+    "priority": { "type": "integer", "minimum": 0, "maximum": 7, "default": 3 },
+    "capability": { "type": "string", "maxLength": 256 },
+    "payload": { "type": "object" }
+  }
+}

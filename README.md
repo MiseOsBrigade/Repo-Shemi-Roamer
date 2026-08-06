@@ -1,200 +1,136 @@
-# Repo Shemi Roamer 🍜
+# Repo Shemi Roamer
 
-A Shimeji-style terminal mascot that safely roams your repository or container filesystem. Repo Shemi explores directory and file metadata, never writes anything, and emits structured JSON Lines events that are ready for CI pipelines and automation.
+A Shimeji-style terminal mascot that safely roams through a repository or container filesystem. Repo Shemi is a read-only observer: it explores metadata by default, can optionally inspect a tightly constrained first line of safe text files, and never mutates the filesystem.
 
----
+## Features
 
-## Contents
-
-- [Quickstart](#quickstart)
-- [Requirements](#requirements)
-- [Install](#install)
-- [Commands](#commands)
-- [CLI reference](#cli-reference)
-- [Characters](#characters)
-- [Safety model](#safety-model)
-- [JSON Lines and automation](#json-lines-and-automation)
-- [Architecture](#architecture)
-- [Testing and CI](#testing-and-ci)
-- [Troubleshooting](#troubleshooting)
-
----
-
-## Quickstart
-
-```bash
-# Install
-npm install
-
-# Watch the mascot roam the current repository
-npm run roam:repo
-
-# Run a bounded, deterministic demo (no TTY required)
-npm run demo
-
-# Emit structured JSON Lines for pipelines
-npm run demo:jsonl
-```
-
----
+- Metadata-only traversal by default.
+- Secret-like path redaction and content blocking.
+- No symbolic-link traversal.
+- Heavy and system-sensitive directory exclusions.
+- Deterministic seeded demonstrations.
+- Finite CI-safe execution.
+- JSON Lines event output.
+- Character profiles with path preferences.
+- Node.js built-in test suite with no runtime dependencies.
 
 ## Requirements
 
-- **Node.js ≥ 20** (LTS or newer)
-- No runtime dependencies — only Node.js built-ins are used.
+- Node.js 20 or newer.
 
----
-
-## Install
+## Install and run
 
 ```bash
-# From source
-git clone https://github.com/MiseOsBrigade/Repo-Shemi-Roamer.git
-cd Repo-Shemi-Roamer
 npm install
+npm run roam:repo
 ```
 
-After installation the `shemi` binary is available via `npx` or directly:
+Or invoke the CLI directly:
 
 ```bash
-node bin/shemi-roamer.mjs --help
+node bin/shemi-roamer.mjs . --max-depth=6 --tick=650
 ```
 
----
+Press `q` or `Ctrl+C` to stop live terminal mode.
 
 ## Commands
 
-| Script | Command | Purpose |
-|---|---|---|
-| `npm start` | `node bin/shemi-roamer.mjs .` | Start live roaming in the current directory |
-| `npm run roam:repo` | `… --max-depth=6 --tick=650` | Live repo roam, depth 6, 650 ms tick |
-| `npm run roam:container` | `… / --max-depth=4 --tick=800` | Live container filesystem roam |
-| `npm run demo` | `… --steps=8 --seed=miseos` | Bounded 8-step deterministic demo |
-| `npm run demo:jsonl` | `… --steps=8 --seed=miseos --json` | Same demo, JSON Lines output |
-| `npm run list:characters` | `… --list-characters` | Print all available mascot profiles |
-| `npm test` | `node --test` | Run the built-in Node.js test suite |
-| `npm run check` | syntax check + tests | Full pre-commit validation |
-
----
+```bash
+npm run start
+npm run roam:repo
+npm run roam:container
+npm run demo
+npm run demo:jsonl
+npm run list:characters
+npm test
+npm run check
+```
 
 ## CLI reference
 
 ```text
 shemi [root] [options]
+
+--character=<id>    Select a mascot profile
+--max-depth=<n>     Maximum traversal depth
+--tick=<ms>         Delay between live steps
+--steps=<n>         Run a finite number of steps
+--seed=<value>      Use deterministic traversal
+--peek              Read the first useful line of safe small text files
+--json              Emit JSON Lines instead of terminal UI
+--show-hidden       Include hidden entries except ignored paths
+--list-characters   Print available mascot profiles
+--help              Print help
+--version           Print the package version
 ```
 
-`root` defaults to `.` (current directory) when omitted.
+## Examples
 
-| Option | Type / Example | Behavior |
-|---|---|---|
-| `--character=<id>` | string, e.g. `kurogami-senpai` | Select a mascot profile (default: `orchestra-core`) |
-| `--max-depth=<n>` | positive integer (default: `5`) | Maximum traversal depth from root |
-| `--tick=<ms>` | integer ≥ 100 (default: `700`) | Milliseconds between live steps |
-| `--steps=<n>` | positive integer | Run exactly *n* steps then exit; required in non-TTY mode without `--json` |
-| `--seed=<value>` | any string, e.g. `ci` | Seed the PRNG for fully deterministic, reproducible runs |
-| `--peek` | flag | Read the first useful line of safe small text files (see [Safety model](#safety-model)) |
-| `--json` | flag | Emit one JSON Lines object per step instead of the terminal UI |
-| `--show-hidden` | flag | Include hidden entries (those starting with `.`) except ignored or secret-like paths |
-| `--list-characters` | flag | Print all mascot profiles and exit |
-| `--help`, `-h` | flag | Print usage and exit |
-| `--version`, `-v` | flag | Print package version and exit |
+### Bounded repository demo
 
-**Validation rules enforced at startup:**
+```bash
+node bin/shemi-roamer.mjs . --steps=8 --seed=miseos
+```
 
-- `--max-depth` must be a positive integer (no `NaN`, `0`, or `Infinity`).
-- `--tick` must be an integer of at least `100` ms.
-- `--steps` must be a positive integer when provided.
-- Any unrecognised `--flag` throws an error with the option name.
+### Machine-readable JSON Lines
 
----
+```bash
+node bin/shemi-roamer.mjs . --steps=8 --seed=miseos --json
+```
+
+### Safe peeking
+
+Peeking is disabled by default. When enabled, Repo Shemi only reads files that are:
+
+- text-like source, configuration, or documentation files;
+- smaller than 80 KB;
+- not identified as secret-like;
+- not reached through a symbolic link.
+
+```bash
+node bin/shemi-roamer.mjs . --steps=8 --peek
+```
+
+### Container filesystem
+
+```bash
+node bin/shemi-roamer.mjs / --max-depth=4 --tick=800
+```
+
+System-sensitive paths such as `/proc`, `/sys`, `/dev`, `/run`, `/tmp`, `/var/lib`, `/var/cache`, and `/var/log` are excluded.
 
 ## Characters
-
-List available profiles:
 
 ```bash
 node bin/shemi-roamer.mjs --list-characters
 ```
 
-| ID | Name | Sprite | Kitchen role | Repository bias |
-|---|---|---|---|---|
-| `orchestra-core` | Orchestra Core | 🍜 | Chef Spirit | Root docs, `package.json`, `.github` |
-| `kurogami-senpai` | Kurogami Senpai | 🥢 | Chef de Cuisine | `src/`, `bin/`, `.github/` |
-| `seira` | Seira | 🧂 | Sommelier | `config/`, `infra/`, auth and security paths |
-| `build-kun` | Build-Kun | 🏗️ | Boulanger | `docker/`, `build/`, `dist/`, `bin/` |
+| ID | Character | Role | Repository bias |
+|---|---|---|---|
+| `orchestra-core` | Orchestra Core | Chef Spirit | Root docs, package metadata, workflows |
+| `kurogami-senpai` | Kurogami Senpai | Chef de Cuisine | Source, CLI, and automation |
+| `seira` | Seira | Sommelier | Security and configuration stations |
+| `build-kun` | Build-Kun | Boulanger | Build, container, and binary stations |
 
-Unknown character IDs fall back silently to `orchestra-core`. Characters influence weighted traversal scoring only; they do not grant extra capabilities or bypass safety controls.
-
----
+Unknown character IDs safely fall back to `orchestra-core`.
 
 ## Safety model
 
 Repo Shemi is intentionally incapable of filesystem mutation.
 
-### What it does
+- It only uses `lstat`, `readdir`, and optional constrained `readFile` operations.
+- It never writes, deletes, renames, moves, changes permissions, or executes repository files.
+- It skips symbolic links rather than resolving them.
+- It excludes heavy and system-sensitive directories.
+- Hidden entries are excluded by default, except safe project metadata such as `.github`.
+- Secret-like names are not peeked and are redacted in emitted paths.
+- `--peek` must be explicitly enabled.
 
-- Uses only `lstat`, `readdir`, and (when `--peek` is explicitly enabled) a constrained `readFile`.
-- Never writes, deletes, renames, moves, changes permissions, or executes any file.
+This design reduces accidental exposure, but it is not a sandbox or a substitute for operating-system access controls. Run it with the least filesystem permissions required.
 
-### Hidden path handling
+## Event schema
 
-- Hidden entries (names starting with `.`) are **excluded by default**.
-- Safe project metadata directories — `.github`, `.devcontainer`, `.changeset` — are **always visible**.
-- Pass `--show-hidden` to include all other hidden entries, except paths that are ignored or secret-like.
-
-### Secret-like redaction
-
-Any path segment that matches the following pattern is treated as secret-like:
-
-```
-.env, secret, token, credential, private_key, id_rsa, id_dsa,
-*.pem, *.p12, *.key, kubeconfig, password, passwd, auth.json
-(case-insensitive)
-```
-
-- Secret-like absolute paths are emitted as `[redacted]` in the `path` field of every JSON event.
-- Each secret-like segment in `displayPath` is individually replaced with `[redacted]`.
-- `--peek` is silently skipped for secret-like paths regardless of file type or size.
-
-### Symlink behaviour
-
-Symbolic links are **never followed**. They are filtered out before any directory listing is scored or traversed.
-
-### Ignored paths
-
-The following names and paths are always skipped, regardless of `--show-hidden`:
-
-**Ignored directory names:** `.git`, `node_modules`, `.next`, `.turbo`, `.cache`, `dist`, `build`, `coverage`, `__pycache__`, `.venv`, `venv`, `proc`, `sys`, `dev`, `run`, `tmp`
-
-**Ignored path prefixes (relative to root):** `var/lib`, `var/cache`, `var/log`
-
-### `--peek` constraints
-
-When `--peek` is enabled, a file is only read if **all** of the following conditions are met:
-
-1. `--peek` is explicitly passed on the command line.
-2. The file extension is one of: `.js .mjs .cjs .ts .tsx .jsx .py .go .rs .java .cs .php .rb .md .mdx .txt .json .yaml .yml .toml .html .css` — or the basename is exactly `Dockerfile`.
-3. The file is not secret-like (see above).
-4. The file size is **≤ 80 KB**.
-5. The file is a regular file (not a symlink, directory, or special file).
-
-The value emitted in the `peek` field is the **first non-empty, non-comment line** of the file (truncated to 100 characters). Lines starting with `//` or `#` are skipped. If no such line exists the value is `[empty or comments only]`.
-
-### Non-goals
-
-- Repo Shemi is **not** a sandbox or security boundary.
-- It is **not** a substitute for operating-system access controls.
-- It provides **no** network access, process execution, or privilege escalation.
-
-Run it with the minimum filesystem permissions required for the target directory.
-
----
-
-## JSON Lines and automation
-
-Use `--json` to emit one JSON object per line (JSON Lines / NDJSON), suitable for `jq`, log aggregators, or CI artefacts.
-
-### Event schema
+Each JSON Lines event includes:
 
 ```json
 {
@@ -215,114 +151,36 @@ Use `--json` to emit one JSON object per line (JSON Lines / NDJSON), suitable fo
 }
 ```
 
-When `--peek` is active and a file is successfully read, a `"peek"` string field is added to the event.
+A secret-like absolute path is emitted as `[redacted]`, and any secret-like path segment in `displayPath` is replaced with `[redacted]`.
 
-### Deterministic runs with `--seed`
+## GitHub Actions
 
-Passing `--seed=<value>` replaces `Math.random` with a seeded PRNG (Mulberry32 variant). The same seed always produces the same traversal sequence for the same directory tree, making demos and CI assertions reproducible.
-
-```bash
-node bin/shemi-roamer.mjs . --steps=5 --seed=ci --json
-```
-
-### Bounded runs with `--steps`
-
-`--steps=<n>` causes the process to exit cleanly after exactly *n* steps. This is the recommended mode for CI pipelines and scripts where a persistent live process is not appropriate.
-
-```bash
-# CI pipeline example: emit 10 JSON events and validate with jq
-node bin/shemi-roamer.mjs . --steps=10 --seed=pipeline --json \
-  | jq -r '.displayPath'
-```
-
-### Pipe-safe behaviour
-
-In non-TTY environments without `--json` **and** without `--steps`, the process throws an error immediately:
-
-```
-Live terminal mode requires a TTY. Use --steps=<n> or --json.
-```
-
-This prevents silent hangs in scripts and CI runners.
-
----
+The included workflow validates Node.js 20, 22, and 24, runs syntax and test checks, and executes a deterministic bounded demonstration. Workflow permissions are read-only.
 
 ## Architecture
 
 ```text
 repo-shemi-roamer/
 ├── bin/
-│   └── shemi-roamer.mjs   # CLI entrypoint; argument parsing, run loop, signal handling
+│   └── shemi-roamer.mjs
 ├── src/
-│   ├── index.js           # RepoRoamer class, step logic, event construction, formatEventLine
-│   ├── safety.js          # Ignore lists, secret-like detection, hidden-name rules, maskPath, truncate
-│   ├── characters.js      # Character roster, findCharacter, listCharacters
-│   ├── random.js          # createRandom — seeded PRNG (Mulberry32) or Math.random passthrough
-│   ├── cli-options.js     # HELP_TEXT constant, parseArgs with validation
-│   └── terminal-renderer.js # clearScreen, hideCursor, showCursor, renderTerminal
+│   ├── characters.js
+│   ├── cli-options.js
+│   ├── index.js
+│   ├── random.js
+│   ├── safety.js
+│   └── terminal-renderer.js
 ├── test/
 │   ├── cli.test.js
 │   ├── roamer.test.js
 │   └── safety.test.js
-├── .github/
-│   └── workflows/
-│       └── shemi-roamer.yml
+├── .github/workflows/shemi-roamer.yml
 ├── CHANGELOG.md
 ├── LICENSE
 ├── README.md
 └── package.json
 ```
 
-### Module map
+## Extending the roster
 
-| Module | Responsibility |
-|---|---|
-| `bin/shemi-roamer.mjs` | Parses `process.argv`, dispatches info commands, runs bounded or live loop, handles SIGINT/SIGTERM |
-| `src/index.js` | `RepoRoamer` class — initialise, step, weighted candidate selection, peek, event construction |
-| `src/safety.js` | Ignore lists, `isSecretish`, `isHiddenName`, `isIgnoredEntry`, `maskPath`, `truncate` |
-| `src/characters.js` | Immutable character roster, `findCharacter`, `listCharacters` |
-| `src/random.js` | `createRandom(seed)` — returns a seeded PRNG or `Math.random` when seed is absent |
-| `src/cli-options.js` | `HELP_TEXT` string, `parseArgs(argv)` with strict validation |
-| `src/terminal-renderer.js` | ANSI cursor and screen helpers, `renderTerminal` for the live TUI |
-
----
-
-## Testing and CI
-
-### Local validation
-
-```bash
-# Run the Node.js built-in test suite
-npm test
-
-# Syntax check the CLI entrypoint + run tests
-npm run check
-
-# Quick bounded smoke run (JSON output, no TTY required)
-node bin/shemi-roamer.mjs . --steps=3 --seed=ci --json
-```
-
-### GitHub Actions workflow
-
-The workflow at `.github/workflows/shemi-roamer.yml` runs on every push and pull request with **read-only** repository permissions.
-
-| Step | What it does |
-|---|---|
-| Checkout | Shallow clone |
-| Set up Node.js | Matrix: Node.js **20**, **22**, **24** |
-| Install | `npm install --ignore-scripts` |
-| Validate | `npm run check` (syntax + tests) |
-| Demo | `npm run demo` (bounded 8-step seeded run) |
-
----
-
-## Troubleshooting
-
-| Symptom | Cause | Fix |
-|---|---|---|
-| `Live terminal mode requires a TTY. Use --steps=<n> or --json.` | Running in a non-TTY shell (script, CI, pipe) without bounded or JSON mode | Add `--steps=<n>` or `--json` |
-| `Unknown option: --foo` | Unrecognised flag passed to CLI | Check spelling; see `--help` for valid options |
-| `Root must be an existing directory: <path>` | The `root` argument does not point to an existing directory | Pass a valid path, e.g. `node bin/shemi-roamer.mjs .` |
-| Directory silently skipped / mascot never enters a folder | The directory matches an ignored name (`node_modules`, `dist`, etc.) or an ignored path prefix | Expected behaviour; see [Ignored paths](#ignored-paths) |
-| Permission denied during traversal | OS denies `readdir` on a directory | Repo Shemi catches the error, emits `"avoids a locked room"` event, and moves on — no crash |
-| `--peek` returns nothing for a file | File is secret-like, binary, >80 KB, or has only comments/empty lines | Expected behaviour; see [`--peek` constraints](#--peek-constraints) |
+Add a profile to `src/characters.js` with a unique `id`, display metadata, preferred paths, and preferred files. Profiles influence weighted traversal only; they do not grant capabilities or bypass safety controls.
