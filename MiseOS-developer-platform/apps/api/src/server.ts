@@ -1,0 +1,1 @@
+import {buildApp} from './app.js';const port=Number(process.env.MISEOS_PORT??8787);const host=process.env.MISEOS_HOST??'0.0.0.0';const app=await buildApp();try{await app.listen({port,host})}catch(error){app.log.error(error);process.exit(1)}

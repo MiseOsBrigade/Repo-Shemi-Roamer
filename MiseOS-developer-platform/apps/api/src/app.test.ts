@@ -1,0 +1,2 @@
+import test from 'node:test';import assert from 'node:assert/strict';import path from 'node:path';import {buildApp} from './app.js';
+const base=path.resolve(new URL('../../..', import.meta.url).pathname);test('GET /health reports valid catalog',async()=>{const app=await buildApp({base,logger:false});const response=await app.inject({method:'GET',url:'/health'});assert.equal(response.statusCode,200);assert.equal(response.json().catalogItems,23);await app.close();});

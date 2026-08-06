@@ -1,0 +1,10 @@
+services:
+  registry-api:
+    build: .
+    environment:
+      MISEOS_PORT: 8787
+      MISEOS_ATTESTATION_SECRET: ${MISEOS_ATTESTATION_SECRET:-development-only-secret-change-me-123456}
+    ports: ["8787:8787"]
+    read_only: true
+    tmpfs: ["/tmp"]
+    security_opt: ["no-new-privileges:true"]

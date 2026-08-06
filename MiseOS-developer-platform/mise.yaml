@@ -1,0 +1,18 @@
+mise:
+  version: 1
+  mode: advisory
+  repo_profile: service
+  ecosystem:
+    character_agents: 112
+    registry_manifests: 23
+    total_items: 135
+  policies:
+    registry:
+      canonical_source: registry/registry-catalog.manifest.json
+      require_record_kind: registry_manifest
+      reject_character_fields: [rarity, lore, collectible_traits, edition]
+  modules:
+    registry: true
+    policy: true
+    reliability: true
+    workflows: true

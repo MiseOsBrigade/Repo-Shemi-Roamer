@@ -1,0 +1,22 @@
+name: Feature request
+description: Propose a capability or platform improvement
+title: "[Feature]: "
+labels: [enhancement, triage]
+body:
+  - type: textarea
+    id: problem
+    attributes: {label: Problem, description: "What user or operational problem needs solving?"}
+    validations: {required: true}
+  - type: textarea
+    id: outcome
+    attributes: {label: Desired outcome}
+    validations: {required: true}
+  - type: dropdown
+    id: layer
+    attributes:
+      label: Ecosystem layer
+      options: [Character IP, Agent utility, Participation economy, Cross-layer]
+    validations: {required: true}
+  - type: textarea
+    id: permissions
+    attributes: {label: Permissions and proof requirements, description: Describe mutation, network, secret, approval, and evidence needs}
