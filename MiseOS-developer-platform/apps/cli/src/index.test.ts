@@ -5,10 +5,11 @@ import test from 'node:test';
 
 test('CLI help is runnable from source', () => {
   const entrypoint = fileURLToPath(new URL('./index.ts', import.meta.url));
+  const tsxLoader = fileURLToPath(import.meta.resolve('tsx'));
   const workspace = fileURLToPath(new URL('../../../', import.meta.url));
   const result = spawnSync(
     process.execPath,
-    ['--import', 'tsx', entrypoint, '--help'],
+    ['--import', tsxLoader, entrypoint, '--help'],
     { cwd: workspace, encoding: 'utf8' },
   );
 
