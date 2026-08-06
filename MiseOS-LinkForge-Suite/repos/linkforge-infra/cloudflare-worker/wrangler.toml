@@ -1,0 +1,5 @@
+name = "linkforge-intake"
+main = "src/index.js"
+compatibility_date = "2026-07-01"
+[vars]
+LINKFORGE_API_URL = "https://api.example.com"

@@ -1,0 +1,88 @@
+schema_version: '1.0'
+brand: MiseOS LinkForge
+source:
+  source: /mnt/data/MiseOS-LinkForge-Suite/repos/linkforge-core/examples/github-security-settings.txt
+  normalized_source: /mnt/data/MiseOS-LinkForge-Suite/repos/linkforge-core/examples/github-security-settings.txt
+  title: Github Security Settings
+  text: 'Six security settings every GitHub maintainer should enable
+
+
+    Maintainers do not need to be security engineers to improve project security.
+    A practical baseline can be enabled quickly.
+
+
+    1. Add a SECURITY.md file. Tell researchers how to report vulnerabilities privately,
+    what is in scope, and what information to include.
+
+    2. Enable private vulnerability reporting. Give researchers a confidential place
+    to report issues and collaborate on a fix.
+
+    3. Turn on secret scanning with push protection. Detect leaked credentials and
+    block supported secrets before they enter a repository.
+
+    4. Enable Dependabot and dependency review. Alert on known vulnerabilities and
+    inspect dependency changes introduced by pull requests.
+
+    5. Turn on code scanning. Use CodeQL default setup to identify vulnerability patterns
+    and scan pull requests.
+
+    6. Protect the default branch. Require pull requests, approval, resolved conversations,
+    and passing checks before merge.
+
+
+    These settings do not make a project unhackable. They reduce common attack paths
+    and make compromise more difficult.'
+  extractor: local-text
+  retrieved_at: '2026-08-04T09:59:59.550725+00:00'
+  canonical_url: null
+  author: null
+  published_at: null
+  description: null
+  headings: []
+  media: []
+  warnings: []
+  injection_signals: []
+  raw_metadata:
+    bytes: 1064
+summary:
+  executive_summary: Six security settings every GitHub maintainer should enable Maintainers
+    do not need to be security engineers to improve project security. Tell researchers
+    how to report vulnerabilities privately, what is in scope, and what information
+    to include. Enable private vulnerability reporting.
+  key_points:
+  - Six security settings every GitHub maintainer should enable Maintainers do not
+    need to be security engineers to improve project security.
+  - Tell researchers how to report vulnerabilities privately, what is in scope, and
+    what information to include.
+  - Enable private vulnerability reporting.
+  - Give researchers a confidential place to report issues and collaborate on a fix.
+  - Enable Dependabot and dependency review.
+  - Alert on known vulnerabilities and inspect dependency changes introduced by pull
+    requests.
+  - Use CodeQL default setup to identify vulnerability patterns and scan pull requests.
+  - Require pull requests, approval, resolved conversations, and passing checks before
+    merge.
+  sections:
+  - heading: Source overview
+    details: Six security settings every GitHub maintainer should enable Maintainers
+      do not need to be security engineers to improve project security. Tell researchers
+      how to report vulnerabilities privately, what is in scope, and what information
+      to include. Enable private vulnerability reporting.
+  actions:
+  - Six security settings every GitHub maintainer should enable Maintainers do not
+    need to be security engineers to improve project security.
+  - A practical baseline can be enabled quickly.
+  - Enable private vulnerability reporting.
+  - Turn on secret scanning with push protection.
+  - Enable Dependabot and dependency review.
+  - Use CodeQL default setup to identify vulnerability patterns and scan pull requests.
+  risks:
+  - Deterministic ranking can omit nuance; verify consequential claims against primary
+    sources.
+  verification_questions:
+  - Which claims are supported by a primary source?
+  - What context may be missing because the source is dynamic or access-restricted?
+  - Which dates, figures, or product details could have changed since publication?
+  method: extractive-frequency-ranking
+provenance:
+  content_sha256: 35b2cb768392eb95e0cb47e022737d738fe03bac729bdfdd121cf9141f3b90ff

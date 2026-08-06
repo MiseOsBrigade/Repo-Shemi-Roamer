@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "1.0.0",
+  "keys": [
+    {
+      "keyId": "miseverse-release-2026-08",
+      "alg": "Ed25519",
+      "publicKeyRawBase64Url": "bPqE9wGc8to6XQwJEmzQOxS1yWQqEM2vwLXVN13HOfs",
+      "publicKeySpkiPem": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAbPqE9wGc8to6XQwJEmzQOxS1yWQqEM2vwLXVN13HOfs=\n-----END PUBLIC KEY-----\n"
+    }
+  ]
+}

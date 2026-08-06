@@ -1,0 +1,25 @@
+schema_version: '1.0'
+pipeline: linkforge-core
+brand: MiseOS LinkForge
+source:
+  input: repos/linkforge-core/examples/github-security-settings.txt
+  normalized: /mnt/data/MiseOS-LinkForge-Suite/repos/linkforge-core/examples/github-security-settings.txt
+  title: Github Security Settings
+  content_sha256: 35b2cb768392eb95e0cb47e022737d738fe03bac729bdfdd121cf9141f3b90ff
+processing:
+  retrieved_at: '2026-08-04T09:59:59.550725+00:00'
+  extractor: local-text
+  summarizer: extractive-frequency-ranking
+  warnings: []
+  injection_signals: []
+outputs:
+  source.txt: c3dc3f0c30813d9acffcd365a3831bfc467d8bd9d2d8c7a3564ff36481a24b30
+  report.json: 98cbe2b4f9155fcb50b91b57821a7c1c63bb6122a3888b7ec880fe7f79d1b170
+  report.yaml: 2b6d311774f48830f3e2eba93e48093f9d27f749386352c632fd7ad457622086
+  report.md: 384177d7878d3f7045e4f06f4cce6702dd4c870bcaecbff2501773f24e84037d
+  report.txt: 39d9b4688653fc5d1e59ed00705477ac2fa8b76d4fc5b0a5774973935389fb01
+  report.pdf: 83eb764223b22e59391441225fc8c7783161c03da2a1ac412c00ea3f37521ed3
+  report.html: b856ccb57d690a6571834f7a09eaa2160a039a270afe81b65d995e6714dd4776
+renderer:
+  name: linkforge-render
+  version: 1.0.0

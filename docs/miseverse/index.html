@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Explore signed Repo Shemi operator hotspots inside the Miseverse Grid Ecosystem.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
+  <title>Miseverse Grid · Repo Shemi Roamer</title>
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#operator-list">Skip to operators</a>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">MISEOS · REPO SHEMI ROAMER</p>
+      <h1>Miseverse Grid Ecosystem</h1>
+    </div>
+    <div id="trust-status" class="status pending"><span aria-hidden="true"></span> verifying signed manifest</div>
+  </header>
+
+  <main>
+    <section class="world-shell" aria-labelledby="world-heading">
+      <div class="world-copy">
+        <p class="eyebrow">CIRCUIT BOARD · CITY GRID · SHEET LAYERS</p>
+        <h2 id="world-heading">Characters are operational projections of verified grid state.</h2>
+        <p>The world image is visual-only. Each selectable hotspot is bound by an Ed25519-signed manifest to a named operator, station, and allowlisted visual workflow. No code is hidden inside character assets.</p>
+      </div>
+      <div class="world-stage" id="world-stage" aria-label="Interactive map of Miseverse operator stations">
+        <img id="world-image" src="assets/miseverse-grid-world.webp" alt="Miseverse city grid showing eight culinary technology operators at their stations">
+        <div id="hotspots" class="hotspots"></div>
+      </div>
+      <div class="legend" aria-label="Grid layers">
+        <span>Evidence</span><span>Work</span><span>Memory</span><span>Time</span><span>Governance</span>
+      </div>
+    </section>
+
+    <section class="control-grid">
+      <div class="operator-panel" aria-live="polite">
+        <p class="eyebrow">SELECTED OPERATOR</p>
+        <div id="operator-detail" class="operator-detail">
+          <p>Select a character in the world or from the roster.</p>
+        </div>
+      </div>
+      <div class="workflow-panel">
+        <p class="eyebrow">SIGNED ALLOWLIST PREVIEW</p>
+        <ol id="workflow-list"></ol>
+        <label class="consent-row">
+          <input id="consent" type="checkbox" disabled>
+          <span>I approve this visual-only workflow simulation.</span>
+        </label>
+        <button id="simulate-button" type="button" disabled>Verify manifest to continue</button>
+        <p class="fine-print">Simulation updates this interface only. It cannot mutate a repository, execute imported code, or authorize external actions.</p>
+      </div>
+    </section>
+
+    <section aria-labelledby="roster-heading">
+      <div class="section-heading">
+        <p class="eyebrow">CHEF BRIGADE</p>
+        <h2 id="roster-heading">Operator roster</h2>
+      </div>
+      <div id="operator-list" class="operator-list"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>The grid owns state. Characters visualize bounded operator roles. Every action remains explicit and traceable.</p>
+  </footer>
+</body>
+</html>

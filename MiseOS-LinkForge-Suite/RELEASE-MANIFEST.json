@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.0",
+  "release": "MiseOS LinkForge Suite v1.0.0",
+  "generated_at": "2026-08-04",
+  "repositories": [
+    {
+      "name": "linkforge-actions",
+      "zip": "bundles/linkforge-actions-v1.0.0.zip",
+      "sha256": "32f2cc88d54b3b6f2ccd25b23ccfccd0419708c060ec67260727859904b9359e",
+      "files": 19
+    },
+    {
+      "name": "linkforge-api",
+      "zip": "bundles/linkforge-api-v1.0.0.zip",
+      "sha256": "5e4b0c69e54eb8087c9e73d5a4aac8cf2ac090b6c6bec85dda73804cb2cd852a",
+      "files": 20
+    },
+    {
+      "name": "linkforge-core",
+      "zip": "bundles/linkforge-core-v1.0.0.zip",
+      "sha256": "8303005f891ca448faf3a3397ab4a1a2562a382c2c07272a015c54d7f7d0ede3",
+      "files": 27
+    },
+    {
+      "name": "linkforge-infra",
+      "zip": "bundles/linkforge-infra-v1.0.0.zip",
+      "sha256": "e757f59903aaa5243c0ea1677abaf5cd2d8d38fb6e1d91094cbc76b24aad8421",
+      "files": 23
+    },
+    {
+      "name": "linkforge-mcp",
+      "zip": "bundles/linkforge-mcp-v1.0.0.zip",
+      "sha256": "961d161c8b4276940ce029777bd4b756fd7eb50f2aa13f38ecf61001d8a0ae04",
+      "files": 19
+    },
+    {
+      "name": "linkforge-render",
+      "zip": "bundles/linkforge-render-v1.0.0.zip",
+      "sha256": "5ee5686ac548832c1c8cbeaf42a686305c6ee011a0a4f6250a86488fa4e63369",
+      "files": 20
+    },
+    {
+      "name": "linkforge-research",
+      "zip": "bundles/linkforge-research-v1.0.0.zip",
+      "sha256": "d4fcfcc321a589a1d648398113d7035b1118de9236fbcda93be5727c09f75234",
+      "files": 23
+    },
+    {
+      "name": "linkforge-web",
+      "zip": "bundles/linkforge-web-v1.0.0.zip",
+      "sha256": "77c01b2c354cd048bfb474822589931183a07e91d861553c62344c3e3d87e5e2",
+      "files": 20
+    }
+  ],
+  "suite_files_including_release_manifest": 211
+}

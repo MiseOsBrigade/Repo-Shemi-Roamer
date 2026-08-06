@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://miseos.dev/schemas/character.schema.json",
+  "title": "Miseverse Operator Character",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["id", "number", "name", "kitchenRole", "responsibility", "preferredPaths", "preferredFiles"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+    "number": { "type": "integer", "minimum": 1 },
+    "name": { "type": "string", "minLength": 1 },
+    "kitchenRole": { "type": "string", "minLength": 1 },
+    "responsibility": { "type": "string", "minLength": 1 },
+    "sprite": { "type": "string" },
+    "image": { "type": "string" },
+    "station": { "type": "string" },
+    "district": { "type": "string" },
+    "color": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" },
+    "position": {
+      "type": "object",
+      "required": ["x", "y"],
+      "properties": {
+        "x": { "type": "number", "minimum": 0, "maximum": 100 },
+        "y": { "type": "number", "minimum": 0, "maximum": 100 }
+      }
+    },
+    "preferredPaths": { "type": "array", "items": { "type": "string" } },
+    "preferredFiles": { "type": "array", "items": { "type": "string" } },
+    "actions": { "type": "array", "items": { "type": "string" } }
+  }
+}

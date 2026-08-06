@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: linkforge-api, namespace: linkforge}
+spec:
+  replicas: 2
+  selector: {matchLabels: {app: linkforge-api}}
+  template:
+    metadata: {labels: {app: linkforge-api}}
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: api
+          image: ghcr.io/OWNER/linkforge-api:1.0.0
+          ports: [{containerPort: 8787}]
+          env:
+            - name: LINKFORGE_API_KEY
+              valueFrom: {secretKeyRef: {name: linkforge-secrets, key: api-key}}
+          securityContext: {allowPrivilegeEscalation: false, readOnlyRootFilesystem: true, runAsNonRoot: true, capabilities: {drop: ["ALL"]}}
+          resources: {requests: {cpu: 100m, memory: 128Mi}, limits: {cpu: 1000m, memory: 512Mi}}
+          readinessProbe: {httpGet: {path: /health, port: 8787}, initialDelaySeconds: 5, periodSeconds: 10}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: linkforge-api, namespace: linkforge}
+spec:
+  selector: {app: linkforge-api}
+  ports: [{port: 8787, targetPort: 8787}]

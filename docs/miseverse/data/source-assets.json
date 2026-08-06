@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "1.0.0",
+  "note": "Source cards are represented by hashes; the repository publishes an optimized composite world image.",
+  "sources": [
+    {
+      "id": "kuro-guard",
+      "name": "Kuro Guard",
+      "sha256": "0c63843abd14c5a8da187f7c9bbf207d0ec21d3bb37d82a8fb953a16bde65a92",
+      "mediaType": "image/jpeg"
+    },
+    {
+      "id": "iron-hashi",
+      "name": "Iron Hashi",
+      "sha256": "d35bc3b30681bb4f7d02fc3a16ace92482667074d72d5e5149d11cd45e01c062",
+      "mediaType": "image/jpeg"
+    },
+    {
+      "id": "seira",
+      "name": "Seira",
+      "sha256": "553bc61cadead4fb43bc5bdf2be8d40742c9240c283ba2617f623e9b9de50624",
+      "mediaType": "image/jpeg"
+    },
+    {
+      "id": "scale-oni",
+      "name": "Scale Oni",
+      "sha256": "c48a5bdd1b27bacc1f302fbcd8b81c788ba0bfc6df090bd8b12aac387a5001aa",
+      "mediaType": "image/jpeg"
+    },
+    {
+      "id": "streama",
+      "name": "Streama",
+      "sha256": "aecc0233581940ae1b994fd9d644a4f9d170ac197270baa76ca5354ddaaa2fce",
+      "mediaType": "image/jpeg"
+    },
+    {
+      "id": "build-kun",
+      "name": "Build-Kun",
+      "sha256": "89994b595ef2843feb6c7a64d4dfcebfb086fa7806269170867277404f177155",
+      "mediaType": "image/jpeg"
+    },
+    {
+      "id": "umami-code",
+      "name": "Umami Code",
+      "sha256": "927979844ad7a1c5529c03cc77a3e7a530c90de834b5a4fc1877a5d72d8332e5",
+      "mediaType": "image/jpeg"
+    },
+    {
+      "id": "kurogami-senpai",
+      "name": "Kurogami Senpai",
+      "sha256": "e1b91f827ff29dd88e23b0a4682df213c3c45fe489b09508c51ab12562c569ca",
+      "mediaType": "image/jpeg"
+    }
+  ]
+}

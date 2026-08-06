@@ -1,0 +1,29 @@
+schema_version: '1.0'
+brand: MiseOS LinkForge
+owner: GoodShyt Systems
+tagline: Save the source. Trace the truth. Ship the packet.
+repositories:
+  - name: linkforge-core
+    language: Python
+    responsibility: capture and provenance
+  - name: linkforge-research
+    language: Python
+    responsibility: evidence enrichment and licensed imports
+  - name: linkforge-render
+    language: Python
+    responsibility: PDF and HTML rendering
+  - name: linkforge-api
+    language: Python
+    responsibility: capture job API
+  - name: linkforge-web
+    language: HTML/CSS/JavaScript
+    responsibility: browser PWA
+  - name: linkforge-mcp
+    language: Python
+    responsibility: MCP tools for ChatGPT and compatible clients
+  - name: linkforge-actions
+    language: YAML/Shell/Python
+    responsibility: GitHub automation and provenance
+  - name: linkforge-infra
+    language: Terraform/YAML/JavaScript
+    responsibility: deployment and repository provisioning

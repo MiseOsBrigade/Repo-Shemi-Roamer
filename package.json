@@ -1,8 +1,8 @@
 {
   "name": "repo-shemi-roamer",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
-  "description": "A read-only Shimeji-style terminal mascot that safely roams repositories and container filesystems.",
+  "description": "A read-only Shimeji-style terminal mascot and signed Miseverse character-grid visualization for repositories and container filesystems.",
   "license": "MIT",
   "bin": {
     "shemi": "./bin/shemi-roamer.mjs"
@@ -10,6 +10,7 @@
   "exports": {
     ".": "./src/index.js",
     "./characters": "./src/characters.js",
+    "./miseverse-grid": "./src/miseverse-grid.js",
     "./safety": "./src/safety.js"
   },
   "scripts": {
@@ -19,8 +20,11 @@
     "demo": "node bin/shemi-roamer.mjs . --steps=8 --seed=miseos",
     "demo:jsonl": "node bin/shemi-roamer.mjs . --steps=8 --seed=miseos --json",
     "list:characters": "node bin/shemi-roamer.mjs --list-characters",
+    "build:miseverse": "node scripts/build-miseverse-demo.mjs",
+    "verify:miseverse": "node scripts/verify-miseverse-manifest.mjs",
+    "preview:miseverse": "node scripts/serve-miseverse.mjs",
     "test": "node --test",
-    "check": "node --check bin/shemi-roamer.mjs && node --test"
+    "check": "node --check bin/shemi-roamer.mjs && node --check src/miseverse-grid.js && node --check docs/miseverse/app.js && node --test && npm run verify:miseverse"
   },
   "engines": {
     "node": ">=20"
@@ -28,6 +32,10 @@
   "files": [
     "bin/",
     "src/",
+    "scripts/",
+    "schemas/",
+    "brand/",
+    "docs/miseverse/",
     "README.md",
     "LICENSE"
   ],
@@ -37,6 +45,8 @@
     "mascot",
     "shimeji",
     "terminal",
-    "miseos"
+    "miseos",
+    "miseverse",
+    "character-grid"
   ]
 }
