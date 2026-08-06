@@ -1,0 +1,30 @@
+name: Shimeji Brigade
+
+on:
+  push:
+    paths:
+      - 'shimeji-brigade/**'
+      - '.github/workflows/shimeji-brigade.yml'
+  pull_request:
+    paths:
+      - 'shimeji-brigade/**'
+      - '.github/workflows/shimeji-brigade.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Build Shimeji Brigade packs
+        working-directory: shimeji-brigade
+        run: npm run build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: shimeji-brigade-runtime-packs
+          path: shimeji-brigade/exports/

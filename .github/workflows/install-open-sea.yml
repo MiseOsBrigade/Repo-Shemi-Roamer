@@ -1,0 +1,64 @@
+name: Install Open Sea Demo
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - procedural-open-sea-webgpu.zip
+      - procedural-open-sea-webgpu.sha256
+      - .github/workflows/install-open-sea.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: install-open-sea-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify release archive
+        run: sha256sum --check procedural-open-sea-webgpu.sha256
+
+      - name: Expand readable source
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf docs/open-sea
+          mkdir -p docs/open-sea
+          unzip -q procedural-open-sea-webgpu.zip -d docs/open-sea
+          test -s docs/open-sea/index.html
+          test -s docs/open-sea/main.js
+          touch docs/.nojekyll
+
+      - name: Validate generated source
+        run: |
+          node --check docs/open-sea/main.js
+          python3 - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          HTMLParser().feed(Path('docs/open-sea/index.html').read_text())
+          print('Open Sea source validation passed.')
+          PY
+
+      - name: Commit expanded source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/.nojekyll docs/open-sea/index.html docs/open-sea/main.js
+          if git diff --cached --quiet; then
+            echo "Expanded source is already current."
+            exit 0
+          fi
+          git commit -m "feat(web): install procedural WebGPU open-sea demo"
+          git push origin HEAD:main

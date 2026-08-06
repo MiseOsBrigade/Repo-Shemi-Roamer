@@ -1,0 +1,16 @@
+{
+  "name": "@miseos/repo-shemi-roamer-shimeji-brigade",
+  "version": "0.8.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "generate:frames": "node tools/generate-candidate-frames.mjs",
+    "validate": "npm run generate:frames && node tools/validate-sprite-packs.mjs",
+    "build:packs": "npm run generate:frames && node tools/build-runtime-packs.mjs",
+    "export:metadata": "node tools/export-mint-metadata.mjs",
+    "build": "npm run validate && npm run build:packs && npm run export:metadata",
+    "test": "npm run validate",
+    "lint": "node --check tools/generate-candidate-frames.mjs && node --check tools/validate-sprite-packs.mjs && node --check tools/build-runtime-packs.mjs && node --check tools/export-mint-metadata.mjs"
+  },
+  "engines": { "node": ">=20" }
+}

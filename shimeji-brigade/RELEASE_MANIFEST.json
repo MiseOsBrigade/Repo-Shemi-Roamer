@@ -1,0 +1,14 @@
+{
+  "name": "Shimeji Brigade for Repo-Shemi-Roamer",
+  "version": "0.8.0",
+  "status": "candidate-generated",
+  "characters": {
+    "mizu": { "frames": 37, "referencePage": 1 },
+    "kurogami": { "frames": 37, "referencePage": 2 }
+  },
+  "securityBoundary": {
+    "noWalletLogic": true,
+    "noPrivateKeys": true,
+    "noMintingLogic": true
+  }
+}
