@@ -1,0 +1,42 @@
+{
+  "name": "repo-shemi-roamer",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "A read-only Shimeji-style terminal mascot that safely roams repositories and container filesystems.",
+  "license": "MIT",
+  "bin": {
+    "shemi": "./bin/shemi-roamer.mjs"
+  },
+  "exports": {
+    ".": "./src/index.js",
+    "./characters": "./src/characters.js",
+    "./safety": "./src/safety.js"
+  },
+  "scripts": {
+    "start": "node bin/shemi-roamer.mjs .",
+    "roam:repo": "node bin/shemi-roamer.mjs . --max-depth=6 --tick=650",
+    "roam:container": "node bin/shemi-roamer.mjs / --max-depth=4 --tick=800",
+    "demo": "node bin/shemi-roamer.mjs . --steps=8 --seed=miseos",
+    "demo:jsonl": "node bin/shemi-roamer.mjs . --steps=8 --seed=miseos --json",
+    "list:characters": "node bin/shemi-roamer.mjs --list-characters",
+    "test": "node --test",
+    "check": "node --check bin/shemi-roamer.mjs && node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    "bin/",
+    "src/",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "cli",
+    "filesystem",
+    "mascot",
+    "shimeji",
+    "terminal",
+    "miseos"
+  ]
+}
