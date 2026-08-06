@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "policyId": "miseos-treasury-firewall-v1",
+  "version": "1.0.0",
+  "defaultDecision": "deny",
+  "description": "Fail-closed controls separating client revenue, operating reserves, and research capital.",
+  "capitalDomains": {
+    "operating": [
+      "client_revenue",
+      "tax_reserve",
+      "refund_reserve",
+      "payroll_reserve",
+      "infrastructure_reserve",
+      "owner_distribution"
+    ],
+    "research": [
+      "approved_experimental_capital"
+    ]
+  },
+  "forbiddenTransitions": [
+    {
+      "from": "client_revenue",
+      "to": "market_execution",
+      "reason": "Client receipts must not automatically fund trading activity."
+    },
+    {
+      "from": "refund_reserve",
+      "to": "trading_wallet",
+      "reason": "Refund obligations are protected operating liabilities."
+    },
+    {
+      "from": "payroll_reserve",
+      "to": "experimental_contract",
+      "reason": "Payroll obligations cannot be exposed to experimental risk."
+    },
+    {
+      "from": "unverified_payment_event",
+      "to": "treasury_allocation",
+      "reason": "Browser redirects and unsigned webhooks are not proof of settlement."
+    }
+  ],
+  "requiredChecks": [
+    "payment_signature_verified",
+    "payment_event_idempotent",
+    "funds_settled",
+    "jurisdiction_allowed",
+    "platform_terms_allowed",
+    "risk_classification_recorded",
+    "maximum_loss_recorded",
+    "human_approval_recorded",
+    "isolated_account_confirmed",
+    "audit_record_created",
+    "kill_switch_available"
+  ],
+  "marketExecution": {
+    "defaultMode": "simulation_only",
+    "blockedJurisdictionAction": "disable_order_placement",
+    "bypassMethodsProhibited": [
+      "vpn",
+      "proxy",
+      "offshore_server",
+      "remote_agent",
+      "delegated_wallet"
+    ],
+    "baseCaseMakerRebate": 0,
+    "prohibitedClaims": [
+      "risk-free",
+      "guaranteed return",
+      "instant guaranteed liquidity"
+    ],
+    "requiredControls": [
+      "inventory_limits",
+      "stale_quote_cancellation",
+      "price_guards",
+      "fill_reconciliation",
+      "circuit_breaker",
+      "emergency_kill_switch"
+    ]
+  },
+  "outreach": {
+    "humanApprovalRequired": true,
+    "requirements": [
+      "accurate_sender_identity",
+      "non_deceptive_subject",
+      "physical_postal_address",
+      "clear_opt_out",
+      "durable_suppression_list",
+      "unsubscribe_processing",
+      "source_provenance",
+      "rate_limit"
+    ]
+  },
+  "payments": {
+    "browserRedirectIsSettlementProof": false,
+    "requirements": [
+      "raw_body_signature_verification",
+      "event_freshness_validation",
+      "idempotency_lock",
+      "durable_event_log",
+      "retry_policy",
+      "least_privilege_credentials"
+    ]
+  },
+  "review": {
+    "sourceSnapshotDate": "2026-08-02",
+    "addedDate": "2026-08-06",
+    "revalidateExternalFactsBeforeRelease": true
+  }
+}

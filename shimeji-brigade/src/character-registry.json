@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "2.0.0",
+  "characters": [
+    {
+      "id": "mizu",
+      "name": "Mizu",
+      "role": "Ticket Alchemist",
+      "squad": "Linkers",
+      "spriteRoot": "assets/sprites/mizu",
+      "referenceSource": "uploaded character packet, page 1",
+      "status": "candidate-generated",
+      "visualApprovalRequired": true,
+      "personality": {
+        "energy": 0.62,
+        "curiosity": 0.82,
+        "patience": 0.68,
+        "bravery": 0.56,
+        "sociability": 0.88,
+        "clumsiness": 0.18
+      }
+    },
+    {
+      "id": "kurogami",
+      "name": "Kurogami",
+      "role": "Chef Sentinel",
+      "squad": "Sentinels",
+      "spriteRoot": "assets/sprites/kurogami",
+      "referenceSource": "uploaded character packet, page 2",
+      "status": "candidate-generated",
+      "visualApprovalRequired": true,
+      "personality": {
+        "energy": 0.58,
+        "curiosity": 0.44,
+        "patience": 0.88,
+        "bravery": 0.74,
+        "sociability": 0.51,
+        "clumsiness": 0.12
+      }
+    }
+  ]
+}
