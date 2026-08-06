@@ -1,0 +1,142 @@
+{
+  "schemaVersion": "1.0.0",
+  "manifestId": "miseverse-character-grid-v1",
+  "generatedAt": "1970-01-01T00:00:00.000Z",
+  "asset": {
+    "path": "assets/miseverse-grid-world.webp",
+    "sha256": "dfa3b6cc0ee35c1a9e4c3e880855a502547143ba6c755fd2752e567ca56c97d4"
+  },
+  "hotspots": [
+    {
+      "id": "kurogami-senpai",
+      "label": "Kurogami Senpai",
+      "role": "Chef de Cuisine",
+      "position": {
+        "x": 50,
+        "y": 25
+      },
+      "actionIds": [
+        "plan",
+        "orchestrate",
+        "deploy",
+        "release"
+      ]
+    },
+    {
+      "id": "seira",
+      "label": "Seira",
+      "role": "Sommelier",
+      "position": {
+        "x": 72,
+        "y": 50
+      },
+      "actionIds": [
+        "curate",
+        "package",
+        "release",
+        "celebrate"
+      ]
+    },
+    {
+      "id": "build-kun",
+      "label": "Build-Kun",
+      "role": "Boulanger",
+      "position": {
+        "x": 88,
+        "y": 70
+      },
+      "actionIds": [
+        "build",
+        "package",
+        "containerize",
+        "deploy"
+      ]
+    },
+    {
+      "id": "kuro-guard",
+      "label": "Kuro Guard",
+      "role": "Steward",
+      "position": {
+        "x": 16,
+        "y": 58
+      },
+      "actionIds": [
+        "monitor",
+        "protect",
+        "audit",
+        "attest"
+      ]
+    },
+    {
+      "id": "iron-hashi",
+      "label": "Iron Hashi",
+      "role": "Boucher",
+      "position": {
+        "x": 35,
+        "y": 58
+      },
+      "actionIds": [
+        "validate",
+        "checksum",
+        "test",
+        "confirm"
+      ]
+    },
+    {
+      "id": "scale-oni",
+      "label": "Scale Oni",
+      "role": "Rôtisseur",
+      "position": {
+        "x": 52,
+        "y": 69
+      },
+      "actionIds": [
+        "profile",
+        "optimize",
+        "scale",
+        "benchmark"
+      ]
+    },
+    {
+      "id": "streama",
+      "label": "Streama",
+      "role": "Data Stream Chef",
+      "position": {
+        "x": 18,
+        "y": 22
+      },
+      "actionIds": [
+        "ingest",
+        "normalize",
+        "stream",
+        "observe"
+      ]
+    },
+    {
+      "id": "umami-code",
+      "label": "Umami Code",
+      "role": "Saucier",
+      "position": {
+        "x": 82,
+        "y": 22
+      },
+      "actionIds": [
+        "compose",
+        "refactor",
+        "integrate",
+        "document"
+      ]
+    }
+  ],
+  "policy": {
+    "visualOnly": true,
+    "allowlistOnly": true,
+    "explicitConsentRequired": true,
+    "imageCodeExecution": false
+  },
+  "signature": {
+    "alg": "Ed25519",
+    "keyId": "miseverse-release-2026-08",
+    "value": "h5wCG9YxtTKMcZPa/daSN5vQhX5AAoa+LSTFWx3qjfqasVQ2HYTnZMQVjv2ISf2IRWm/Df5pxEyBj6CO58OqAA=="
+  }
+}

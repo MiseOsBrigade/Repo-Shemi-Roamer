@@ -1,0 +1,218 @@
+{
+  "schemaVersion": "1.0.0",
+  "generatedAt": "1970-01-01T00:00:00.000Z",
+  "world": "Miseverse Grid Ecosystem",
+  "rule": "The grid owns state; characters project bounded, allowlisted operator roles.",
+  "districts": [
+    {
+      "id": "data-streams",
+      "name": "Data Streams",
+      "layer": "evidence"
+    },
+    {
+      "id": "orchestration-core",
+      "name": "Grid Orchestration Layer",
+      "layer": "work"
+    },
+    {
+      "id": "studio",
+      "name": "Studio",
+      "layer": "memory"
+    },
+    {
+      "id": "security-gateway",
+      "name": "Security Gateway",
+      "layer": "governance"
+    },
+    {
+      "id": "validation-forge",
+      "name": "Validation Forge",
+      "layer": "evidence"
+    },
+    {
+      "id": "optimization-forge",
+      "name": "Optimization Forge",
+      "layer": "work"
+    },
+    {
+      "id": "release-lounge",
+      "name": "Release Lounge",
+      "layer": "time"
+    },
+    {
+      "id": "build-workshop",
+      "name": "Build Workshop",
+      "layer": "work"
+    }
+  ],
+  "characters": [
+    {
+      "id": "kurogami-senpai",
+      "name": "Kurogami Senpai",
+      "role": "Chef de Cuisine",
+      "responsibility": "Orchestrates plans, release gates, and cross-agent handoffs.",
+      "sprite": "🥄",
+      "image": "assets/miseverse-grid-world.webp",
+      "station": "orchestration-core",
+      "district": "Grid Orchestration Layer",
+      "color": "#D6A23A",
+      "position": {
+        "x": 50,
+        "y": 25
+      },
+      "actions": [
+        "plan",
+        "orchestrate",
+        "deploy",
+        "release"
+      ]
+    },
+    {
+      "id": "seira",
+      "name": "Seira",
+      "role": "Sommelier",
+      "responsibility": "Curates release quality, provenance, package notes, and compatibility signals.",
+      "sprite": "🍷",
+      "image": "assets/miseverse-grid-world.webp",
+      "station": "release-lounge",
+      "district": "Release Lounge",
+      "color": "#A855F7",
+      "position": {
+        "x": 72,
+        "y": 50
+      },
+      "actions": [
+        "curate",
+        "package",
+        "release",
+        "celebrate"
+      ]
+    },
+    {
+      "id": "build-kun",
+      "name": "Build-Kun",
+      "role": "Boulanger",
+      "responsibility": "Builds repeatable packages, containers, static previews, and deployment artifacts.",
+      "sprite": "🥐",
+      "image": "assets/miseverse-grid-world.webp",
+      "station": "build-workshop",
+      "district": "Build Workshop",
+      "color": "#F2C94C",
+      "position": {
+        "x": 88,
+        "y": 70
+      },
+      "actions": [
+        "build",
+        "package",
+        "containerize",
+        "deploy"
+      ]
+    },
+    {
+      "id": "kuro-guard",
+      "name": "Kuro Guard",
+      "role": "Steward",
+      "responsibility": "Monitors repository health, protects policy boundaries, and records audit outcomes.",
+      "sprite": "🛡️",
+      "image": "assets/miseverse-grid-world.webp",
+      "station": "security-gateway",
+      "district": "Security Gateway",
+      "color": "#38A169",
+      "position": {
+        "x": 16,
+        "y": 58
+      },
+      "actions": [
+        "monitor",
+        "protect",
+        "audit",
+        "attest"
+      ]
+    },
+    {
+      "id": "iron-hashi",
+      "name": "Iron Hashi",
+      "role": "Boucher",
+      "responsibility": "Performs precise validation, checksum review, and deterministic test cuts.",
+      "sprite": "🔪",
+      "image": "assets/miseverse-grid-world.webp",
+      "station": "validation-forge",
+      "district": "Validation Forge",
+      "color": "#E97B22",
+      "position": {
+        "x": 35,
+        "y": 58
+      },
+      "actions": [
+        "validate",
+        "checksum",
+        "test",
+        "confirm"
+      ]
+    },
+    {
+      "id": "scale-oni",
+      "name": "Scale Oni",
+      "role": "Rôtisseur",
+      "responsibility": "Stress-tests throughput, optimizes hot paths, and controls performance thresholds.",
+      "sprite": "🔥",
+      "image": "assets/miseverse-grid-world.webp",
+      "station": "optimization-forge",
+      "district": "Optimization Forge",
+      "color": "#F97316",
+      "position": {
+        "x": 52,
+        "y": 69
+      },
+      "actions": [
+        "profile",
+        "optimize",
+        "scale",
+        "benchmark"
+      ]
+    },
+    {
+      "id": "streama",
+      "name": "Streama",
+      "role": "Data Stream Chef",
+      "responsibility": "Normalizes event streams, telemetry, JSONL output, and observability records.",
+      "sprite": "🌊",
+      "image": "assets/miseverse-grid-world.webp",
+      "station": "data-streams",
+      "district": "Data Streams",
+      "color": "#1E9BB8",
+      "position": {
+        "x": 18,
+        "y": 22
+      },
+      "actions": [
+        "ingest",
+        "normalize",
+        "stream",
+        "observe"
+      ]
+    },
+    {
+      "id": "umami-code",
+      "name": "Umami Code",
+      "role": "Saucier",
+      "responsibility": "Composes reusable code, refines interfaces, and binds workflows into cohesive services.",
+      "sprite": "🥣",
+      "image": "assets/miseverse-grid-world.webp",
+      "station": "studio",
+      "district": "Studio",
+      "color": "#F6E7C3",
+      "position": {
+        "x": 82,
+        "y": 22
+      },
+      "actions": [
+        "compose",
+        "refactor",
+        "integrate",
+        "document"
+      ]
+    }
+  ]
+}
