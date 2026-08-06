@@ -1,0 +1,48 @@
+{
+  "$schema": "../registry-catalog.schema.json",
+  "catalog_index": 8,
+  "registry_id": "miseos.maven-policy-adapter",
+  "name": "MiseOS Maven Policy Adapter",
+  "type": "Package",
+  "record_kind": "registry_manifest",
+  "version": "1.0.0",
+  "status": "active",
+  "distribution": {
+    "channels": [
+      "npm",
+      "container",
+      "marketplace"
+    ]
+  },
+  "runtime": {
+    "engine": "node",
+    "minimum_version": "20.11.0",
+    "handler": "mavenPolicyAdapter"
+  },
+  "permissions": {
+    "network": "deny_by_default",
+    "filesystem": "workspace_scoped",
+    "process": "internal_allowlist"
+  },
+  "compatibility": {
+    "miseos_schema": "^1.0.0",
+    "platforms": [
+      "linux",
+      "macos",
+      "windows"
+    ]
+  },
+  "pricing": {
+    "tier": "community",
+    "currency": "USD",
+    "amount": 0
+  },
+  "marketplace": {
+    "category": "package",
+    "published": false
+  },
+  "capability": {
+    "operation": "mavenPolicyAdapter",
+    "description": "Executable baseline capability for MiseOS Maven Policy Adapter."
+  }
+}

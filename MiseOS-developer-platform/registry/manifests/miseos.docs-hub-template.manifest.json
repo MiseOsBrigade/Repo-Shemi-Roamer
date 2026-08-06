@@ -1,0 +1,47 @@
+{
+  "$schema": "../registry-catalog.schema.json",
+  "catalog_index": 6,
+  "registry_id": "miseos.docs-hub-template",
+  "name": "MiseOS Docs Hub Template",
+  "type": "Template",
+  "record_kind": "registry_manifest",
+  "version": "1.0.0",
+  "status": "active",
+  "distribution": {
+    "channels": [
+      "marketplace",
+      "registry"
+    ]
+  },
+  "runtime": {
+    "engine": "node",
+    "minimum_version": "20.11.0",
+    "handler": "docsHubTemplate"
+  },
+  "permissions": {
+    "network": "deny_by_default",
+    "filesystem": "workspace_scoped",
+    "process": "internal_allowlist"
+  },
+  "compatibility": {
+    "miseos_schema": "^1.0.0",
+    "platforms": [
+      "linux",
+      "macos",
+      "windows"
+    ]
+  },
+  "pricing": {
+    "tier": "community",
+    "currency": "USD",
+    "amount": 0
+  },
+  "marketplace": {
+    "category": "template",
+    "published": false
+  },
+  "capability": {
+    "operation": "docsHubTemplate",
+    "description": "Executable baseline capability for MiseOS Docs Hub Template."
+  }
+}

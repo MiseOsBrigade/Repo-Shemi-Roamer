@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://miseos.dev/schemas/registry-catalog.schema.json",
+  "title": "MiseOS Registry Manifest",
+  "type": "object",
+  "required": [
+    "registry_id",
+    "name",
+    "type",
+    "record_kind",
+    "version",
+    "runtime",
+    "permissions"
+  ],
+  "properties": {
+    "registry_id": {
+      "type": "string",
+      "pattern": "^miseos\\.[a-z0-9-]+$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 3
+    },
+    "type": {
+      "enum": [
+        "SDK",
+        "Analytics",
+        "Policy",
+        "Package",
+        "Container",
+        "Template",
+        "Schema",
+        "Agent",
+        "Workflow",
+        "Theme"
+      ]
+    },
+    "record_kind": {
+      "const": "registry_manifest"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "status": {
+      "enum": [
+        "active",
+        "deprecated",
+        "experimental",
+        "disabled"
+      ]
+    },
+    "runtime": {
+      "type": "object",
+      "required": [
+        "engine",
+        "handler"
+      ],
+      "properties": {
+        "engine": {
+          "enum": [
+            "node"
+          ]
+        },
+        "minimum_version": {
+          "type": "string"
+        },
+        "handler": {
+          "type": "string"
+        }
+      }
+    },
+    "permissions": {
+      "type": "object",
+      "required": [
+        "network",
+        "filesystem",
+        "process"
+      ],
+      "properties": {
+        "network": {
+          "enum": [
+            "deny_by_default",
+            "allowlist"
+          ]
+        },
+        "filesystem": {
+          "enum": [
+            "workspace_scoped",
+            "read_only",
+            "none"
+          ]
+        },
+        "process": {
+          "enum": [
+            "internal_allowlist",
+            "none"
+          ]
+        }
+      }
+    },
+    "pricing": {
+      "type": "object",
+      "properties": {
+        "tier": {
+          "enum": [
+            "community",
+            "pro",
+            "enterprise"
+          ]
+        },
+        "currency": {
+          "type": "string"
+        },
+        "amount": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}

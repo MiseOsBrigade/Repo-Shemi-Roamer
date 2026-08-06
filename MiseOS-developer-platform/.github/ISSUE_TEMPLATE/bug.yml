@@ -1,0 +1,27 @@
+name: Bug report
+description: Report a reproducible defect
+title: "[Bug]: "
+labels: [bug, triage]
+body:
+  - type: markdown
+    attributes:
+      value: Do not include secrets, tokens, private keys, or customer data.
+  - type: textarea
+    id: summary
+    attributes: {label: Summary, description: "What happened?"}
+    validations: {required: true}
+  - type: textarea
+    id: reproduce
+    attributes: {label: Reproduction, description: Minimal commands or request payload}
+    validations: {required: true}
+  - type: textarea
+    id: expected
+    attributes: {label: Expected behavior}
+    validations: {required: true}
+  - type: textarea
+    id: evidence
+    attributes: {label: Validation evidence, description: Sanitized logs and exact check results}
+  - type: input
+    id: version
+    attributes: {label: Version or commit}
+    validations: {required: true}
