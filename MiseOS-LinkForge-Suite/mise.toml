@@ -1,0 +1,35 @@
+[tools]
+python="3.12"
+node="22"
+
+[tasks.install]
+run="""
+python -m pip install -e 'repos/linkforge-core[all,dev]'
+python -m pip install -e 'repos/linkforge-research[ai,dev]'
+python -m pip install -e 'repos/linkforge-render[dev]'
+python -m pip install -e 'repos/linkforge-api[dev]'
+"""
+
+[tasks.demo]
+run="""
+rm -rf samples/generated
+linkforge capture repos/linkforge-core/examples/github-security-settings.txt --output samples/generated --provider extractive
+linkforge-render render samples/generated/report.json --visual /mnt/data/C3F98E17-5302-474B-B196-BA669EB820AC.png --visual /mnt/data/F833C2A5-4310-4558-B40A-B2FB8B6F0903.png --visual /mnt/data/875B922D-7CAA-4FE9-9357-62AAFAF16A04.jpeg --output samples/generated
+linkforge verify samples/generated
+"""
+
+[tasks.test]
+run="""
+pytest -q repos/linkforge-core/tests repos/linkforge-research/tests repos/linkforge-render/tests repos/linkforge-api/tests
+"""
+
+[tasks.static]
+run="""
+python -m compileall -q repos
+node --check repos/linkforge-web/app.js
+node --check repos/linkforge-web/sw.js
+node --check repos/linkforge-infra/cloudflare-worker/src/index.js
+"""
+
+[tasks.check]
+depends=["test","static"]

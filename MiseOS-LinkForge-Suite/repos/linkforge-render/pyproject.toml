@@ -1,0 +1,16 @@
+[build-system]
+requires=["setuptools>=70"]
+build-backend="setuptools.build_meta"
+[project]
+name="linkforge-render"
+version="1.0.0"
+requires-python=">=3.11"
+dependencies=["reportlab>=4.2,<5","Pillow>=10,<13"]
+[project.optional-dependencies]
+dev=["pytest>=8,<10","pypdf>=5,<7","ruff>=0.9,<1"]
+[project.scripts]
+linkforge-render="linkforge_render.cli:main"
+[tool.setuptools.packages.find]
+where=["src"]
+[tool.pytest.ini_options]
+pythonpath=["src"]

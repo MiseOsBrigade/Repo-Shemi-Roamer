@@ -1,0 +1,40 @@
+{
+  "evidence_count": 1,
+  "providers": {
+    "statista": 1
+  },
+  "average_confidence": 0.664,
+  "high_confidence_count": 0,
+  "items": [
+    {
+      "title": "Example licensed market record",
+      "url": "https://example.com/record",
+      "provider": "statista",
+      "published_at": "2026-08-01",
+      "authors": [],
+      "abstract": "Synthetic row demonstrating the authorized export schema.",
+      "doi": null,
+      "citation_count": null,
+      "source_type": "licensed-market-intelligence",
+      "authority": 0.84,
+      "freshness": 0.72,
+      "directness": 0.76,
+      "corroboration": 0.0,
+      "metadata": {
+        "license_note": "Synthetic demonstration only; not Statista data",
+        "export_sha256": "0c5af48c7562ba7089e2685a7c2af6c26c4ba11f17eb7e8b7c5c0304d62cbceb",
+        "imported_at": "2026-08-04T10:01:26.963777+00:00",
+        "record": {
+          "title": "Example licensed market record",
+          "url": "https://example.com/record",
+          "date": "2026-08-01",
+          "summary": "Synthetic row demonstrating the authorized export schema."
+        },
+        "corroborating_providers": [
+          "statista"
+        ]
+      },
+      "confidence": 0.664
+    }
+  ]
+}

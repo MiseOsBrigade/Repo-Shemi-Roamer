@@ -1,0 +1,35 @@
+services:
+  api:
+    build:
+      context: ../linkforge-api
+    environment:
+      LINKFORGE_API_KEY: ${LINKFORGE_API_KEY:?required}
+      LINKFORGE_DATA_DIR: /data
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-5.6}
+    volumes:
+      - linkforge-data:/data
+    ports: ["8787:8787"]
+    read_only: true
+    tmpfs: [/tmp]
+    security_opt: ["no-new-privileges:true"]
+  web:
+    image: nginx:1.27-alpine
+    volumes:
+      - ../linkforge-web:/usr/share/nginx/html:ro
+    ports: ["8080:80"]
+    read_only: true
+    tmpfs: [/var/cache/nginx, /var/run]
+  mcp:
+    build:
+      context: ../linkforge-mcp
+    environment:
+      LINKFORGE_API_URL: http://api:8787
+      LINKFORGE_API_KEY: ${LINKFORGE_API_KEY:?required}
+    command: ["linkforge-mcp","--transport","streamable-http","--host","0.0.0.0","--port","8790"]
+    ports: ["8790:8790"]
+    read_only: true
+    tmpfs: [/tmp]
+    security_opt: ["no-new-privileges:true"]
+volumes:
+  linkforge-data: {}

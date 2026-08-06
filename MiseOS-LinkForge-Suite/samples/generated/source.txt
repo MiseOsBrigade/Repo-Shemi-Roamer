@@ -1,0 +1,12 @@
+Six security settings every GitHub maintainer should enable
+
+Maintainers do not need to be security engineers to improve project security. A practical baseline can be enabled quickly.
+
+1. Add a SECURITY.md file. Tell researchers how to report vulnerabilities privately, what is in scope, and what information to include.
+2. Enable private vulnerability reporting. Give researchers a confidential place to report issues and collaborate on a fix.
+3. Turn on secret scanning with push protection. Detect leaked credentials and block supported secrets before they enter a repository.
+4. Enable Dependabot and dependency review. Alert on known vulnerabilities and inspect dependency changes introduced by pull requests.
+5. Turn on code scanning. Use CodeQL default setup to identify vulnerability patterns and scan pull requests.
+6. Protect the default branch. Require pull requests, approval, resolved conversations, and passing checks before merge.
+
+These settings do not make a project unhackable. They reduce common attack paths and make compromise more difficult.
