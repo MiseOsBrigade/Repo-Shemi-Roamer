@@ -1,0 +1,13 @@
+from __future__ import annotations
+import html,json
+from pathlib import Path
+from typing import Any
+
+def build_html(report: dict[str,Any], output: Path, evidence: dict[str,Any]|None=None) -> None:
+    s=report["source"]; m=report["summary"]
+    li=lambda items:"".join(f"<li>{html.escape(str(x))}</li>" for x in items)
+    evidence_rows=""
+    if evidence:
+        evidence_rows="".join(f"<tr><td>{x.get('confidence',0):.3f}</td><td>{html.escape(x.get('provider',''))}</td><td><a href='{html.escape(x.get('url',''))}'>{html.escape(x.get('title',''))}</a></td></tr>" for x in evidence.get("items",[]))
+    document=f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>{html.escape(s['title'])}</title><style>:root{{--forest:#124734;--charcoal:#0F2F25;--orange:#E97B22;--cream:#F6F1E7;--teal:#1E9BB8;--gold:#F2C94C}}*{{box-sizing:border-box}}body{{margin:0;background:var(--cream);color:var(--charcoal);font:16px/1.6 Inter,system-ui,sans-serif}}main{{max-width:920px;margin:auto;padding:56px 28px 90px}}header{{border-top:8px solid var(--orange);background:white;padding:42px;border-radius:22px;box-shadow:0 18px 60px #0f2f2515}}h1{{font-size:clamp(2.2rem,6vw,4.6rem);line-height:1;color:var(--forest);margin:.2em 0}}h2{{color:var(--forest);margin-top:2.4rem}}.tag{{color:var(--teal);font-weight:800}}.meta{{font:13px/1.5 ui-monospace,monospace;overflow-wrap:anywhere}}section{{background:white;margin:22px 0;padding:28px;border-radius:18px}}li{{margin:.6rem 0}}table{{width:100%;border-collapse:collapse}}th,td{{text-align:left;padding:10px;border-bottom:1px solid #d7e3de}}th{{background:var(--forest);color:white}}a{{color:var(--teal)}}</style></head><body><main><header><div class="tag">MiseOS LinkForge</div><h1>{html.escape(s['title'])}</h1><p>Save the source. Trace the truth. Ship the packet.</p><div class="meta">{html.escape(s.get('canonical_url') or s.get('normalized_source',''))}<br>{html.escape(report.get('provenance',{}).get('content_sha256',''))}</div></header><section><h2>Executive summary</h2><p>{html.escape(m.get('executive_summary',''))}</p></section><section><h2>Key points</h2><ul>{li(m.get('key_points',[]))}</ul></section><section><h2>Actions</h2><ul>{li(m.get('actions',[]))}</ul></section><section><h2>Risks and limitations</h2><ul>{li(m.get('risks',[]))}</ul></section>{f'<section><h2>Evidence matrix</h2><table><thead><tr><th>Confidence</th><th>Provider</th><th>Source</th></tr></thead><tbody>{evidence_rows}</tbody></table></section>' if evidence else ''}</main></body></html>"""
+    output.parent.mkdir(parents=True,exist_ok=True); output.write_text(document,encoding="utf-8")

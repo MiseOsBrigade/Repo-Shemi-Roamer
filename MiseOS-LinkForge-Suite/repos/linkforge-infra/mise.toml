@@ -1,0 +1,5 @@
+[tools]
+node="22"
+terraform="1.12"
+[tasks.check]
+run="python3 scripts/validate.py"

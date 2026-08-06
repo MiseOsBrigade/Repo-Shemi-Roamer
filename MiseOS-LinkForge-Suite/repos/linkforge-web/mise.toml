@@ -1,0 +1,7 @@
+[tools]
+node="22"
+python="3.12"
+[tasks.dev]
+run="python -m http.server 8080"
+[tasks.check]
+run="npm run check"

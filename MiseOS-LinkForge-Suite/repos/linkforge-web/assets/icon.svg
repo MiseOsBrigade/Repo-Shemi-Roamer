@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">MiseOS LinkForge mark</title>
+  <desc id="desc">Interlocking source links forming a verified shield</desc>
+  <rect width="512" height="512" rx="112" fill="#0F2F25"/>
+  <path d="M157 273c-39-39-39-102 0-141l35-35c39-39 102-39 141 0l18 18-54 54-18-18a23 23 0 0 0-33 0l-35 35a23 23 0 0 0 0 33l18 18-54 54-18-18Z" fill="#1E9BB8"/>
+  <path d="M355 239c39 39 39 102 0 141l-35 35c-39 39-102 39-141 0l-18-18 54-54 18 18a23 23 0 0 0 33 0l35-35a23 23 0 0 0 0-33l-18-18 54-54 18 18Z" fill="#E97B22"/>
+  <path d="m204 258 33 33 78-79 31 31-109 109-64-64 31-30Z" fill="#F6F1E7"/>
+  <circle cx="409" cy="103" r="31" fill="#F2C94C"/>
+</svg>

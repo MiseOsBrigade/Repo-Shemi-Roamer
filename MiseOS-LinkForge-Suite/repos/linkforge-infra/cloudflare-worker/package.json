@@ -1,0 +1,1 @@
+{"name":"linkforge-intake-worker","private":true,"version":"1.0.0","type":"module","scripts":{"check":"node --check src/index.js","deploy":"wrangler deploy"},"devDependencies":{"wrangler":"^4.0.0"}}
