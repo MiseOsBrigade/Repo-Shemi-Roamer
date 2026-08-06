@@ -1,0 +1,21 @@
+{
+  "id": "mizu",
+  "name": "Mizu",
+  "version": "0.8.0",
+  "frameSize": { "width": 128, "height": 128 },
+  "states": {
+    "idle": 6,
+    "walk": 8,
+    "climb": 6,
+    "fall": 4,
+    "drag": 3,
+    "interact": 6,
+    "perch": 4
+  },
+  "fallbackSafe": true,
+  "referenceBacked": false,
+  "candidateFrames": true,
+  "visualApprovalRequired": true,
+  "referenceSource": "page 1, blue-haired Ticket Alchemist",
+  "runtime": { "engine": "shimeji-brigade", "minimumVersion": "0.8.0" }
+}
